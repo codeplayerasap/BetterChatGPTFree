@@ -3,523 +3,235 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Sanitätshaus Danzeisen München · Kompression, Reha & Orthopädie seit 1928</title>
-<meta name="description" content="Sanitätshaus Danzeisen in München – seit 1928 Ihr Partner für Kompressionsstrümpfe, Bandagen, Reha-Technik, Brustprothesen, Einlagen und Alltagshilfen. Persönliche Beratung in Laim, Pasing & Neuhausen." />
-<meta name="theme-color" content="#0d9488" />
+<title>Sanitätshaus Danzeisen München · seit 1928</title>
+<meta name="description" content="Sanitätshaus Danzeisen München – seit 1928. Kompression, Orthopädie, Reha-Technik und Hilfsmittel, in 3D erlebbar. Persönliche Beratung in Laim, Pasing & Neuhausen." />
+<meta name="theme-color" content="#ffffff" />
 <meta property="og:title" content="Sanitätshaus Danzeisen München" />
-<meta property="og:description" content="Qualität und Zuverlässigkeit zum Anfassen – seit 1928. Ihr Sanitätshaus in München." />
-<meta property="og:type" content="website" />
+<meta property="og:description" content="Qualität und Zuverlässigkeit zum Anfassen – seit 1928." />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="css/styles.css" />
-</head>
-<body data-theme="light">
 
-<!-- ===== Skip link / progress ===== -->
-<a class="skip-link" href="#hauptinhalt">Zum Inhalt springen</a>
+<script type="importmap">
+{ "imports": {
+    "three": "./vendor/three.module.js",
+    "three/addons/": "./vendor/jsm/"
+} }
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Zum Inhalt springen</a>
 <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
-<!-- ===== Top bar ===== -->
-<div class="topbar">
-  <div class="container topbar__inner">
-    <div class="topbar__left">
-      <span class="topbar__item"><svg class="ic" viewBox="0 0 24 24"><path d="M6.6 10.8a15.6 15.6 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.25 1z"/></svg> 089 546712-30</span>
-      <span class="topbar__item topbar__item--hide"><svg class="ic" viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 2v.4l8 5 8-5V6H4zm16 12V8.5l-7.4 4.6a1 1 0 0 1-1.2 0L4 8.5V18h16z"/></svg> sani@danzeisen.com</span>
-    </div>
-    <div class="topbar__right">
-      <span class="topbar__badge" id="openStatus">Öffnungszeiten werden geladen…</span>
-    </div>
-  </div>
-</div>
+<!-- Fixed 3D stage (behind content) -->
+<canvas id="stage" aria-hidden="true"></canvas>
+<div class="stage-loader" id="stageLoader" aria-hidden="true"><span></span></div>
 
-<!-- ===== Header / Nav ===== -->
+<!-- ===== Nav ===== -->
 <header class="nav" id="nav">
-  <div class="container nav__inner">
+  <div class="wrap nav__inner">
     <a href="#top" class="brand" aria-label="Danzeisen Startseite">
       <span class="brand__mark" aria-hidden="true">
-        <svg viewBox="0 0 48 48"><path d="M24 4C13 4 4 13 4 24s9 20 20 20 20-9 20-20S35 4 24 4zm9 23h-6v6h-6v-6h-6v-6h6v-6h6v6h6v6z"/></svg>
+        <svg viewBox="0 0 32 32"><path d="M16 3a13 13 0 1 0 0 26 13 13 0 0 0 0-26zm6 15h-4v4h-4v-4h-4v-4h4v-4h4v4h4v4z"/></svg>
       </span>
-      <span class="brand__text">
-        <strong>Danzeisen</strong>
-        <small>Sanitätshaus · München · seit 1928</small>
-      </span>
+      <span class="brand__txt"><strong>Danzeisen</strong><small>Sanitätshaus · seit 1928</small></span>
     </a>
-
     <nav class="nav__links" id="navLinks" aria-label="Hauptnavigation">
+      <a href="#szenen">Produkte</a>
       <a href="#leistungen">Leistungen</a>
-      <a href="#sortiment">Sortiment</a>
-      <a href="#produktwelten">Produktwelten</a>
-      <a href="#reha">REHA-Team</a>
       <a href="#standorte">Standorte</a>
-      <a href="#ablauf">Ablauf</a>
-      <a href="#kontakt">Kontakt</a>
-      <a href="#kontakt" class="btn btn--primary nav__cta">Termin vereinbaren</a>
+      <a href="#service">Service</a>
+      <a href="#kontakt" class="nav__cta">Termin</a>
     </nav>
-
-    <div class="nav__tools">
-      <button class="icon-btn" id="themeToggle" aria-label="Hell/Dunkel umschalten" title="Hell/Dunkel">
-        <svg class="ic ic--sun" viewBox="0 0 24 24"><path d="M12 17a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-13a1 1 0 0 1 1 1v2a1 1 0 1 1-2 0V5a1 1 0 0 1 1-1zm0 14a1 1 0 0 1 1 1v2a1 1 0 1 1-2 0v-2a1 1 0 0 1 1-1zM4 12a1 1 0 0 1 1-1h2a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1zm14 0a1 1 0 0 1 1-1h2a1 1 0 1 1 0 2h-2a1 1 0 0 1-1-1zM6.3 6.3a1 1 0 0 1 1.4 0l1.4 1.4A1 1 0 1 1 7.7 9.1L6.3 7.7a1 1 0 0 1 0-1.4zm9 9a1 1 0 0 1 1.4 0l1.4 1.4a1 1 0 0 1-1.4 1.4l-1.4-1.4a1 1 0 0 1 0-1.4zm2.8-9a1 1 0 0 1 0 1.4l-1.4 1.4a1 1 0 1 1-1.4-1.4l1.4-1.4a1 1 0 0 1 1.4 0zm-9 9a1 1 0 0 1 0 1.4l-1.4 1.4a1 1 0 0 1-1.4-1.4l1.4-1.4a1 1 0 0 1 1.4 0z"/></svg>
-        <svg class="ic ic--moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
-      </button>
-      <button class="icon-btn nav__burger" id="burger" aria-label="Menü öffnen" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
+    <button class="burger" id="burger" aria-label="Menü" aria-expanded="false"><span></span><span></span></button>
   </div>
 </header>
 
-<main id="hauptinhalt">
+<main id="main">
 <span id="top"></span>
 
 <!-- ===== Hero ===== -->
-<section class="hero">
-  <div class="hero__bg" aria-hidden="true">
-    <span class="blob blob--1"></span>
-    <span class="blob blob--2"></span>
-    <span class="grid-overlay"></span>
-  </div>
-  <div class="container hero__inner">
-    <div class="hero__content reveal">
-      <span class="eyebrow"><span class="dot"></span> Familienbetrieb in 3. Generation · München</span>
-      <h1 class="hero__title">Qualität und Zuverlässigkeit <span class="grad">zum Anfassen.</span></h1>
-      <p class="hero__lead">Seit 1928 versorgen wir Münchnerinnen und Münchner mit Kompression, Bandagen, Reha-Technik und individuellen Hilfsmitteln – persönlich, fachkundig und mit allen Krankenkassen abgerechnet.</p>
-      <div class="hero__actions">
-        <a href="#sortiment" class="btn btn--primary btn--lg">Sortiment entdecken <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <a href="#kontakt" class="btn btn--ghost btn--lg">Beratung anfragen</a>
-      </div>
-      <ul class="hero__trust">
-        <li><svg class="ic" viewBox="0 0 24 24"><path d="m9 16.2-3.5-3.5L4 14.2 9 19l11-11-1.5-1.5z"/></svg> Alle Krankenkassen</li>
-        <li><svg class="ic" viewBox="0 0 24 24"><path d="m9 16.2-3.5-3.5L4 14.2 9 19l11-11-1.5-1.5z"/></svg> Hausbesuche möglich</li>
-        <li><svg class="ic" viewBox="0 0 24 24"><path d="m9 16.2-3.5-3.5L4 14.2 9 19l11-11-1.5-1.5z"/></svg> Meisterbetrieb</li>
-      </ul>
-    </div>
-
-    <div class="hero__card reveal">
-      <div class="quickcard">
-        <h3>Schnell-Beratung</h3>
-        <p class="muted">Wir melden uns innerhalb eines Werktags.</p>
-        <form id="quickForm" class="quickform" novalidate>
-          <label>Ihr Anliegen
-            <select name="topic" required>
-              <option value="">Bitte wählen…</option>
-              <option>Kompressionsstrümpfe</option>
-              <option>Bandage / Orthese</option>
-              <option>Einlagen / Schuhe</option>
-              <option>Reha-Technik / Rollstuhl</option>
-              <option>Brustprothese</option>
-              <option>Pflege & Alltagshilfen</option>
-              <option>Sonstiges</option>
-            </select>
-          </label>
-          <label>Telefon oder E-Mail
-            <input type="text" name="contact" placeholder="089 …  oder  name@mail.de" required />
-          </label>
-          <button class="btn btn--primary btn--block" type="submit">Rückruf anfordern</button>
-          <p class="quickform__hint">Kein Spam. Ihre Daten bleiben in München.</p>
-        </form>
-      </div>
+<section class="hero" id="hero">
+  <div class="wrap hero__inner">
+    <p class="kicker reveal">München · Familienbetrieb seit 1928</p>
+    <h1 class="hero__title reveal">Gesundheit,<br><em>zum Greifen nah.</em></h1>
+    <p class="hero__lead reveal">Scrollen Sie durch unsere Welt der Hilfsmittel – jedes Produkt in 3D, so realistisch wie im Geschäft. Kompression, Orthopädie und Reha-Technik, mit echter Beratung dahinter.</p>
+    <div class="hero__actions reveal">
+      <a href="#szenen" class="btn btn--primary">Produkte erleben</a>
+      <a href="#kontakt" class="btn btn--plain">Beratung anfragen →</a>
     </div>
   </div>
+  <div class="hero__scroll reveal" aria-hidden="true"><span>Scrollen</span><i></i></div>
 </section>
 
-<!-- ===== Marquee / brands ===== -->
-<div class="marquee" aria-hidden="true">
-  <div class="marquee__track">
-    <span>Kompression</span><span>•</span><span>Bandagen &amp; Orthesen</span><span>•</span><span>Reha-Technik</span><span>•</span><span>Einlagen</span><span>•</span><span>Brustprothesen</span><span>•</span><span>Lymph- &amp; Lipödem</span><span>•</span><span>Alltagshilfen</span><span>•</span><span>Mutter &amp; Kind</span><span>•</span>
-    <span>Kompression</span><span>•</span><span>Bandagen &amp; Orthesen</span><span>•</span><span>Reha-Technik</span><span>•</span><span>Einlagen</span><span>•</span><span>Brustprothesen</span><span>•</span><span>Lymph- &amp; Lipödem</span><span>•</span><span>Alltagshilfen</span><span>•</span><span>Mutter &amp; Kind</span><span>•</span>
-  </div>
-</div>
+<!-- ===== 3D Scroll-Szenen ===== -->
+<section id="szenen" class="scenes">
 
-<!-- ===== Stats ===== -->
-<section class="stats container">
-  <div class="stat reveal"><span class="stat__num" data-count="1928" data-suffix="">0</span><span class="stat__label">Gegründet in München-Laim</span></div>
-  <div class="stat reveal"><span class="stat__num" data-count="3" data-suffix="">0</span><span class="stat__label">Standorte in der Stadt</span></div>
-  <div class="stat reveal"><span class="stat__num" data-count="95" data-suffix="+">0</span><span class="stat__label">Jahre Erfahrung</span></div>
-  <div class="stat reveal"><span class="stat__num" data-count="100" data-suffix="%">0</span><span class="stat__label">Kassenabrechnung</span></div>
+  <article class="scene" data-scene="0" data-side="right">
+    <div class="wrap scene__inner">
+      <div class="scene__copy">
+        <span class="scene__no">01 — Kompression</span>
+        <h2>Leichtere Beine,<br>jeden Tag.</h2>
+        <p>Medizinische Kompressionsstrümpfe mit präzise dosiertem Druckverlauf – als Maß­anfertigung bei Venen­leiden, Lymph- und Lipödem. Angemessen und angepasst im Haus.</p>
+        <ul class="scene__tags"><li>Maßanfertigung</li><li>Flachstrick</li><li>Venen &amp; Lymph</li></ul>
+        <a href="#kontakt" class="btn btn--ghost">Anmessen lassen</a>
+      </div>
+    </div>
+  </article>
+
+  <article class="scene" data-scene="1" data-side="left">
+    <div class="wrap scene__inner">
+      <div class="scene__copy">
+        <span class="scene__no">02 — Orthopädie</span>
+        <h2>Jeder Schritt<br>im Gleichgewicht.</h2>
+        <p>Orthopädische Einlagen aus der eigenen Werkstatt – nach Fußabdruck und Ganganalyse gefertigt. Stützen das Fußgewölbe und entlasten Gelenke, im Alltag wie im Sport.</p>
+        <ul class="scene__tags"><li>Ganganalyse</li><li>Maßanfertigung</li><li>Sport &amp; Alltag</li></ul>
+        <a href="#kontakt" class="btn btn--ghost">Termin zur Ganganalyse</a>
+      </div>
+    </div>
+  </article>
+
+  <article class="scene" data-scene="2" data-side="right">
+    <div class="wrap scene__inner">
+      <div class="scene__copy">
+        <span class="scene__no">03 — Bandagen &amp; Orthesen</span>
+        <h2>Halt, wo Sie<br>ihn brauchen.</h2>
+        <p>Stabilisierende Orthesen und Bandagen für Knie, Sprung­gelenk, Schulter und Rücken. Sie führen das Gelenk, entlasten gezielt und geben Sicherheit – nach Verletzung oder OP.</p>
+        <ul class="scene__tags"><li>Knie &amp; Rücken</li><li>Nach OP</li><li>Sport</li></ul>
+        <a href="#kontakt" class="btn btn--ghost">Passende Orthese finden</a>
+      </div>
+    </div>
+  </article>
+
+  <article class="scene" data-scene="3" data-side="left">
+    <div class="wrap scene__inner">
+      <div class="scene__copy">
+        <span class="scene__no">04 — Reha &amp; Mobilität</span>
+        <h2>Bewegung,<br>neu gewonnen.</h2>
+        <p>Vom Aktiv­rollstuhl bis zum Pflegebett: Unser REHA-Team passt individuell an, liefert nach Hause und übernimmt die Abrechnung mit der Kasse. Für mehr Selbst­ständigkeit.</p>
+        <ul class="scene__tags"><li>Rollstühle</li><li>Pflegebetten</li><li>Hausbesuch</li></ul>
+        <a href="#kontakt" class="btn btn--ghost">REHA-Beratung</a>
+      </div>
+    </div>
+  </article>
+
+  <article class="scene" data-scene="4" data-side="right">
+    <div class="wrap scene__inner">
+      <div class="scene__copy">
+        <span class="scene__no">05 — Gehhilfen &amp; Alltag</span>
+        <h2>Sicher unterwegs,<br>selbstbestimmt zu Haus.</h2>
+        <p>Gehstöcke, Rollatoren und durchdachte Alltags­hilfen, die Selbst­ständigkeit erhalten – leicht, stabil und auf Ihre Größe eingestellt. Dazu Pflege­hilfsmittel für zuhause.</p>
+        <ul class="scene__tags"><li>Gehhilfen</li><li>Rollatoren</li><li>Alltagshilfen</li></ul>
+        <a href="#kontakt" class="btn btn--ghost">Beratung für zuhause</a>
+      </div>
+    </div>
+  </article>
+
 </section>
 
 <!-- ===== Leistungen ===== -->
-<section class="section" id="leistungen">
-  <div class="container">
-    <div class="section__head reveal">
-      <span class="eyebrow"><span class="dot"></span> Was wir leisten</span>
-      <h2>Versorgung aus einer Hand</h2>
-      <p class="section__sub">Vier Kompetenzbereiche unter einem Dach – damit Sie für jedes Anliegen den richtigen Ansprechpartner haben.</p>
-    </div>
-    <div class="features">
-      <article class="feature reveal">
-        <div class="feature__icon"><svg viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.4 9.3 8 11 4.6-1.7 8-6 8-11V5l-8-3z"/></svg></div>
+<section class="block" id="leistungen">
+  <div class="wrap">
+    <header class="block__head reveal">
+      <span class="kicker">Versorgung aus einer Hand</span>
+      <h2>Vier Kompetenzen,<br>ein vertrautes Haus.</h2>
+    </header>
+    <div class="cards">
+      <div class="card reveal">
+        <span class="card__ic"><svg viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.4 9.3 8 11 4.6-1.7 8-6 8-11V5z"/></svg></span>
         <h3>Sanitätsfachhandel</h3>
-        <p>Kompression, Bandagen, Orthesen und medizinische Hilfsmittel – fachkundig angemessen und individuell angepasst.</p>
-      </article>
-      <article class="feature reveal">
-        <div class="feature__icon"><svg viewBox="0 0 24 24"><path d="M6 19a3 3 0 1 0 0 .01zM18 19a3 3 0 1 0 0 .01zM4 4h2l2 11h9l2-7H7"/></svg></div>
+        <p>Kompression, Bandagen, Orthesen und Hilfsmittel – fachkundig angepasst.</p>
+      </div>
+      <div class="card reveal">
+        <span class="card__ic"><svg viewBox="0 0 24 24"><circle cx="7" cy="18" r="3"/><circle cx="17" cy="18" r="3"/><path d="M5 5h2l2.5 10H17"/></svg></span>
         <h3>REHA-Team</h3>
-        <p>Rollstühle, Rollatoren und Mobilitätshilfen. Wir beraten, passen an und liefern bis nach Hause.</p>
-      </article>
-      <article class="feature reveal">
-        <div class="feature__icon"><svg viewBox="0 0 24 24"><path d="M7 21c-2 0-3-1.5-3-4 0-4 2-6 2-10a4 4 0 0 1 8 0c1 4 3 4 3 8a3 3 0 0 1-3 3c-2 0-2-2-4-2s-2 5-3 5z"/></svg></div>
+        <p>Rollstühle, Rollatoren und Mobilität – beraten, angepasst, geliefert.</p>
+      </div>
+      <div class="card reveal">
+        <span class="card__ic"><svg viewBox="0 0 24 24"><path d="M8 4c2 0 3 2 3 6s-1 6-1 9-1 1-2 1-2 0-2-2 0-3-1-5 0-9 3-9z"/></svg></span>
         <h3>Orthopädie-Technik</h3>
-        <p>Maßgefertigte Einlagen und individuelle technische Versorgungen aus eigener Werkstatt.</p>
-      </article>
-      <article class="feature reveal">
-        <div class="feature__icon"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg></div>
+        <p>Maßgefertigte Einlagen und Versorgungen aus eigener Werkstatt.</p>
+      </div>
+      <div class="card reveal">
+        <span class="card__ic"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg></span>
         <h3>Persönliche Beratung</h3>
-        <p>Diskret, geduldig und auf Augenhöhe – im Geschäft oder bei Ihnen zu Hause per Hausbesuch.</p>
-      </article>
+        <p>Diskret und geduldig – im Geschäft oder per Hausbesuch bei Ihnen.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ===== Sortiment (filterable) ===== -->
-<section class="section section--alt" id="sortiment">
-  <div class="container">
-    <div class="section__head reveal">
-      <span class="eyebrow"><span class="dot"></span> Unser Sortiment</span>
-      <h2>Alles für Gesundheit &amp; Mobilität</h2>
-      <p class="section__sub">Filtern Sie nach Bereich oder durchsuchen Sie unser komplettes Angebot.</p>
-    </div>
-
-    <div class="catalog-controls reveal">
-      <div class="filters" id="filters" role="tablist" aria-label="Kategorien">
-        <button class="chip is-active" data-filter="all">Alles</button>
-        <button class="chip" data-filter="kompression">Kompression</button>
-        <button class="chip" data-filter="orthopaedie">Orthopädie</button>
-        <button class="chip" data-filter="reha">Reha &amp; Mobilität</button>
-        <button class="chip" data-filter="pflege">Pflege &amp; Alltag</button>
-        <button class="chip" data-filter="frau">Frau &amp; Familie</button>
-      </div>
-      <div class="search">
-        <svg class="ic" viewBox="0 0 24 24"><path d="m21 21-4.3-4.3M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        <input type="search" id="catalogSearch" placeholder="Produkt suchen… z. B. Rollator" aria-label="Sortiment durchsuchen" />
-      </div>
-    </div>
-
-    <div class="catalog" id="catalog"><!-- JS füllt die Karten --></div>
-    <p class="catalog__empty" id="catalogEmpty" hidden>Keine Treffer – rufen Sie uns an, wir helfen persönlich weiter: <a href="tel:+498954671230">089 546712-30</a>.</p>
-  </div>
-</section>
-
-<!-- ===== Produktwelten (Scroll-Showcase) ===== -->
-<section class="section" id="produktwelten">
-  <div class="container">
-    <div class="section__head reveal">
-      <span class="eyebrow"><span class="dot"></span> Produktwelten</span>
-      <h2>Sehen, was wir für Sie tun</h2>
-      <p class="section__sub">Scrollen Sie durch unsere Kernbereiche – jede Grafik baut sich auf und zeigt sofort, worum es geht.</p>
-    </div>
-  </div>
-
-  <div class="showcases">
-
-    <!-- 1 Kompression -->
-    <div class="showcase" data-dir="left">
-      <div class="container show__grid">
-        <div class="show__art" data-art>
-          <span class="show__badge">Kompression</span>
-          <svg class="illu" viewBox="0 0 300 360" role="img" aria-label="Bein mit Kompressionsstrumpf">
-            <defs>
-              <linearGradient id="g-leg" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#2dd4bf"/><stop offset="1" stop-color="#0d9488"/>
-              </linearGradient>
-            </defs>
-            <path class="draw" d="M120 30c0 30 8 60 6 95-2 40-18 70-16 110 1 30 6 55 8 80" />
-            <path class="draw" d="M180 30c0 30-8 60-6 95 2 40 18 70 16 110-1 30-6 55-8 80" />
-            <path class="fillp" d="M120 30c0 30 8 60 6 95-2 40-18 70-16 110 1 30 6 55 8 80h54c2-25 7-50 8-80 2-40-14-70-16-110-2-35 6-65 6-95z" fill="url(#g-leg)" opacity=".18"/>
-            <path class="band" d="M118 90h64" /><path class="band" d="M114 140h74" /><path class="band" d="M112 195h78" /><path class="band" d="M114 250h74" /><path class="band" d="M120 300h62" />
-            <path class="draw" d="M104 320c0 16 14 24 46 24s46-8 46-24" />
-            <g class="ping"><circle cx="150" cy="195" r="6"/></g>
-          </svg>
-        </div>
-        <div class="show__text" data-text>
-          <h3>Kompressionsstrümpfe</h3>
-          <p>Gleichmäßiger, medizinisch dosierter Druck von unten nach oben – für leichtere Beine bei Venenleiden, auf Reisen und bei Lymph- oder Lipödem.</p>
-          <ul class="show__chips"><li>Venen</li><li>Maßanfertigung</li><li>Viele Farben</li><li>Flachstrick</li></ul>
-          <a href="#kontakt" class="btn btn--primary">Anmessen lassen</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- 2 Bandagen & Orthesen -->
-    <div class="showcase" data-dir="right">
-      <div class="container show__grid show__grid--rev">
-        <div class="show__art" data-art>
-          <span class="show__badge">Orthopädie</span>
-          <svg class="illu" viewBox="0 0 300 360" role="img" aria-label="Knie mit Bandage">
-            <path class="draw" d="M150 20c-6 50-6 90-30 130" />
-            <path class="draw" d="M150 20c6 50 6 90 30 130" />
-            <path class="draw" d="M120 150c-22 38-22 110-2 190" />
-            <path class="draw" d="M180 150c22 38 22 110 2 190" />
-            <circle class="joint" cx="150" cy="180" r="34" />
-            <path class="strap" d="M104 150q46 26 92 0" /><path class="strap" d="M100 180h100" /><path class="strap" d="M104 210q46 26 92 0" />
-            <g class="ping"><circle cx="150" cy="180" r="7"/></g>
-          </svg>
-        </div>
-        <div class="show__text" data-text>
-          <h3>Bandagen &amp; Orthesen</h3>
-          <p>Stabilisieren, entlasten, schützen: passgenaue Versorgung für Knie, Sprunggelenk, Schulter, Hand und Rücken – ob nach Verletzung oder im Sport.</p>
-          <ul class="show__chips"><li>Knie</li><li>Rücken</li><li>Sport</li><li>Nach OP</li></ul>
-          <a href="#kontakt" class="btn btn--primary">Passende Orthese finden</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- 3 Einlagen -->
-    <div class="showcase" data-dir="left">
-      <div class="container show__grid">
-        <div class="show__art" data-art>
-          <span class="show__badge">Einlagen</span>
-          <svg class="illu" viewBox="0 0 300 360" role="img" aria-label="Orthopädische Einlage">
-            <defs>
-              <linearGradient id="g-sole" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#5eead4"/><stop offset="1" stop-color="#0f766e"/>
-              </linearGradient>
-            </defs>
-            <path class="fillp" d="M150 40c40 0 56 34 54 80-2 40-10 60-8 110 2 56-22 78-46 78s-44-16-44-58c0-40 6-58-2-96-8-40 6-114 46-114z" fill="url(#g-sole)" opacity=".16"/>
-            <path class="draw" d="M150 40c40 0 56 34 54 80-2 40-10 60-8 110 2 56-22 78-46 78s-44-16-44-58c0-40 6-58-2-96-8-40 6-114 46-114z" />
-            <path class="arch" d="M118 150q40 40 0 110" />
-            <path class="arrow" d="M150 150v60" /><path class="arrow" d="M138 196l12 16 12-16" />
-            <g class="ping"><circle cx="150" cy="220" r="6"/></g>
-          </svg>
-        </div>
-        <div class="show__text" data-text>
-          <h3>Orthopädische Einlagen</h3>
-          <p>Aus der eigenen Werkstatt – nach Fußabdruck und Ganganalyse maßgefertigt. Stützen das Fußgewölbe und bringen jeden Schritt ins Gleichgewicht.</p>
-          <ul class="show__chips"><li>Ganganalyse</li><li>Maßanfertigung</li><li>Sport &amp; Alltag</li></ul>
-          <a href="#kontakt" class="btn btn--primary">Termin zur Ganganalyse</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- 4 Reha / Mobilität -->
-    <div class="showcase" data-dir="right">
-      <div class="container show__grid show__grid--rev">
-        <div class="show__art" data-art>
-          <span class="show__badge">Mobilität</span>
-          <svg class="illu" viewBox="0 0 300 360" role="img" aria-label="Rollstuhl">
-            <circle class="wheel" cx="120" cy="250" r="60" />
-            <circle class="wheelin" cx="120" cy="250" r="30" />
-            <circle class="caster" cx="220" cy="280" r="20" />
-            <path class="draw" d="M90 160h90l-14 70h-70" />
-            <path class="draw" d="M90 160v-70h-22" />
-            <path class="draw" d="M180 160l40-40" />
-            <path class="draw" d="M120 250l50-20" />
-            <g class="spin" style="transform-origin:120px 250px"><path class="spoke" d="M120 198v104M68 250h104M84 214l72 72M156 214l-72 72"/></g>
-            <g class="ping"><circle cx="120" cy="250" r="7"/></g>
-          </svg>
-        </div>
-        <div class="show__text" data-text>
-          <h3>REHA &amp; Mobilität</h3>
-          <p>Rollstühle, Rollatoren, Gehhilfen und Pflegebetten – individuell angepasst, geliefert und aufgebaut. Damit Bewegung wieder leicht fällt.</p>
-          <ul class="show__chips"><li>Rollstühle</li><li>Rollatoren</li><li>Pflegebetten</li><li>Hausbesuch</li></ul>
-          <a href="#reha" class="btn btn--primary">REHA-Team entdecken</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- 5 Brustprothesen -->
-    <div class="showcase" data-dir="left">
-      <div class="container show__grid">
-        <div class="show__art" data-art>
-          <span class="show__badge">Diskret</span>
-          <svg class="illu" viewBox="0 0 300 360" role="img" aria-label="Brustprothese und Wäsche">
-            <defs>
-              <linearGradient id="g-soft" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#ffd1cb"/><stop offset="1" stop-color="#ff8a7e"/>
-              </linearGradient>
-            </defs>
-            <path class="fillp" d="M150 90c44 0 80 30 80 78s-36 86-80 86-80-38-80-86 36-78 80-78z" fill="url(#g-soft)" opacity=".2"/>
-            <path class="draw" d="M150 90c44 0 80 30 80 78s-36 86-80 86-80-38-80-86 36-78 80-78z" />
-            <path class="strap" d="M70 168q80-70 160 0" />
-            <path class="arch" d="M122 170a28 28 0 0 0 56 0" />
-            <g class="ping"><circle cx="150" cy="175" r="6"/></g>
-          </svg>
-        </div>
-        <div class="show__text" data-text>
-          <h3>Brustprothesen &amp; Mode</h3>
-          <p>Einfühlsame, diskrete Versorgung nach Brustoperationen – in ruhigen, separaten Räumen. Mit passender Wäsche, Bademode und viel Zeit für Sie.</p>
-          <ul class="show__chips"><li>Diskrete Beratung</li><li>Wäsche</li><li>Bademode</li></ul>
-          <a href="#kontakt" class="btn btn--primary">Vertraulichen Termin anfragen</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- 6 Pflege & Alltag -->
-    <div class="showcase" data-dir="right">
-      <div class="container show__grid show__grid--rev">
-        <div class="show__art" data-art>
-          <span class="show__badge">Zuhause</span>
-          <svg class="illu" viewBox="0 0 300 360" role="img" aria-label="Pflege und Alltagshilfen">
-            <path class="draw" d="M70 300V150a30 30 0 0 1 30-30h100a30 30 0 0 1 30 30v150" />
-            <path class="band" d="M70 200h160" />
-            <path class="draw" d="M120 120V90a30 30 0 0 1 60 0v30" />
-            <path class="hand" d="M150 175c-10 0-18 8-18 20v40c0 26 16 40 36 40s30-16 30-40v-30" />
-            <path class="hand" d="M150 175v-15a8 8 0 0 1 16 0v20" />
-            <path class="hand" d="M166 180v-8a8 8 0 0 1 16 0v18" />
-            <g class="ping"><circle cx="150" cy="205" r="6"/></g>
-          </svg>
-        </div>
-        <div class="show__text" data-text>
-          <h3>Pflege &amp; Alltagshilfen</h3>
-          <p>Praktische Helfer und Pflegehilfsmittel für mehr Selbstständigkeit zuhause – von Greif- und Anziehhilfen bis zu Verbrauchsartikeln und Badhilfen.</p>
-          <ul class="show__chips"><li>Greifhilfen</li><li>Badhilfen</li><li>Pflege-Box</li><li>Mutter &amp; Kind</li></ul>
-          <a href="#kontakt" class="btn btn--primary">Beratung für zuhause</a>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ===== REHA highlight ===== -->
-<section class="section" id="reha">
-  <div class="container reha">
-    <div class="reha__media reveal" aria-hidden="true">
-      <div class="reha__art">
-        <svg viewBox="0 0 24 24"><circle cx="7" cy="19" r="2.4"/><circle cx="17" cy="19" r="2.4"/><path d="M5 4h2l2.5 11H17l2-7H8"/></svg>
-      </div>
-      <div class="reha__pills">
-        <span>Rollstühle</span><span>Rollatoren</span><span>Pflegebetten</span><span>Anti-Dekubitus</span><span>Gehhilfen</span>
-      </div>
-    </div>
-    <div class="reha__content reveal">
-      <span class="eyebrow"><span class="dot"></span> REHA-Team</span>
-      <h2>Mehr Bewegungsfreiheit, mehr Selbstständigkeit</h2>
-      <p>Unser REHA-Team bringt moderne Hilfsmittel direkt in Ihren Alltag. Vom passenden Rollstuhl über das Pflegebett bis zur kompletten Wohnraumanpassung – wir beraten, montieren und kümmern uns um den Papierkram mit der Krankenkasse.</p>
-      <ul class="ticks">
-        <li>Individuelle Anpassung &amp; Probestellung</li>
-        <li>Lieferung, Aufbau und Einweisung inklusive</li>
-        <li>Wartung, Reparatur &amp; Hygieneservice</li>
-        <li>Direkte Abrechnung mit allen Kassen</li>
-      </ul>
-      <a href="#kontakt" class="btn btn--primary">REHA-Beratung anfragen</a>
-    </div>
+<!-- ===== Zahlen / Vertrauen ===== -->
+<section class="stripe">
+  <div class="wrap stripe__grid">
+    <div class="reveal"><strong data-count="1928">1928</strong><span>Gegründet in München-Laim</span></div>
+    <div class="reveal"><strong data-count="3" data-suffix="">3</strong><span>Standorte in der Stadt</span></div>
+    <div class="reveal"><strong data-count="95" data-suffix="+">95+</strong><span>Jahre Erfahrung</span></div>
+    <div class="reveal"><strong data-count="100" data-suffix="%">100%</strong><span>Kassenabrechnung</span></div>
   </div>
 </section>
 
 <!-- ===== Standorte ===== -->
-<section class="section section--alt" id="standorte">
-  <div class="container">
-    <div class="section__head reveal">
-      <span class="eyebrow"><span class="dot"></span> Standorte</span>
-      <h2>Dreimal in München für Sie da</h2>
-      <p class="section__sub">Wählen Sie eine Filiale für Adresse, Telefon und Route.</p>
-    </div>
-    <div class="locations">
-      <div class="locations__list" id="locationList" role="tablist" aria-label="Filialen"><!-- JS --></div>
-      <div class="locations__detail" id="locationDetail" aria-live="polite"><!-- JS --></div>
+<section class="block block--soft" id="standorte">
+  <div class="wrap">
+    <header class="block__head reveal">
+      <span class="kicker">Standorte</span>
+      <h2>Dreimal in München<br>für Sie da.</h2>
+    </header>
+    <div class="locs">
+      <div class="locs__list" id="locList" role="tablist" aria-label="Filialen"></div>
+      <div class="locs__detail" id="locDetail" aria-live="polite"></div>
     </div>
   </div>
 </section>
 
-<!-- ===== Ablauf ===== -->
-<section class="section" id="ablauf">
-  <div class="container">
-    <div class="section__head reveal">
-      <span class="eyebrow"><span class="dot"></span> So einfach geht's</span>
-      <h2>Ihr Weg zur Versorgung</h2>
-      <p class="section__sub">Von der ersten Frage bis zum fertigen Hilfsmittel begleiten wir Sie persönlich.</p>
-    </div>
+<!-- ===== Service / Ablauf ===== -->
+<section class="block" id="service">
+  <div class="wrap">
+    <header class="block__head reveal">
+      <span class="kicker">So einfach geht's</span>
+      <h2>Ihr Weg zur Versorgung.</h2>
+    </header>
     <ol class="steps">
-      <li class="step reveal"><span class="step__no">1</span><h3>Kontakt &amp; Termin</h3><p>Rufen Sie an oder nutzen Sie das Formular. Wir finden gemeinsam einen passenden Termin.</p></li>
-      <li class="step reveal"><span class="step__no">2</span><h3>Beratung &amp; Maß</h3><p>Wir hören zu, beraten ehrlich und nehmen – wenn nötig – Maß für Ihre individuelle Versorgung.</p></li>
-      <li class="step reveal"><span class="step__no">3</span><h3>Kassenabrechnung</h3><p>Rezept einreichen genügt. Den Schriftverkehr mit Ihrer Krankenkasse übernehmen wir.</p></li>
-      <li class="step reveal"><span class="step__no">4</span><h3>Anpassung &amp; Service</h3><p>Übergabe, Einweisung und ein offenes Ohr – auch nach dem Kauf bleiben wir für Sie da.</p></li>
+      <li class="reveal"><span>1</span><h3>Kontakt &amp; Termin</h3><p>Anrufen oder Formular ausfüllen – wir finden gemeinsam einen Termin.</p></li>
+      <li class="reveal"><span>2</span><h3>Beratung &amp; Maß</h3><p>Wir hören zu, beraten ehrlich und nehmen bei Bedarf Maß.</p></li>
+      <li class="reveal"><span>3</span><h3>Kassenabrechnung</h3><p>Rezept genügt – den Rest mit Ihrer Krankenkasse übernehmen wir.</p></li>
+      <li class="reveal"><span>4</span><h3>Anpassung &amp; Service</h3><p>Übergabe, Einweisung und ein offenes Ohr, auch danach.</p></li>
     </ol>
   </div>
 </section>
 
-<!-- ===== Testimonials ===== -->
-<section class="section section--alt" id="stimmen">
-  <div class="container">
-    <div class="section__head reveal">
-      <span class="eyebrow"><span class="dot"></span> Stimmen</span>
-      <h2>Was Kundinnen &amp; Kunden sagen</h2>
-    </div>
-    <div class="testi" id="testi">
-      <div class="testi__track" id="testiTrack"><!-- JS --></div>
-      <div class="testi__nav">
-        <button class="round-btn" id="testiPrev" aria-label="Vorherige Stimme">‹</button>
-        <div class="testi__dots" id="testiDots"></div>
-        <button class="round-btn" id="testiNext" aria-label="Nächste Stimme">›</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== FAQ ===== -->
-<section class="section" id="faq">
-  <div class="container faq">
-    <div class="section__head section__head--left reveal">
-      <span class="eyebrow"><span class="dot"></span> Häufige Fragen</span>
-      <h2>Gut zu wissen</h2>
-      <p class="section__sub">Sie haben eine andere Frage? <a href="#kontakt">Schreiben Sie uns.</a></p>
-    </div>
-    <div class="accordion" id="accordion">
-      <details class="acc"><summary>Übernimmt meine Krankenkasse die Kosten?</summary><div class="acc__body"><p>In den meisten Fällen ja. Mit einem ärztlichen Rezept rechnen wir direkt mit allen gesetzlichen und privaten Kassen ab. Es bleibt in der Regel nur die gesetzliche Zuzahlung.</p></div></details>
-      <details class="acc"><summary>Brauche ich für die Beratung einen Termin?</summary><div class="acc__body"><p>Für eine schnelle Frage können Sie gern spontan vorbeikommen. Für Maßanfertigungen und ausführliche Beratungen empfehlen wir einen Termin – so haben wir Zeit nur für Sie.</p></div></details>
-      <details class="acc"><summary>Bieten Sie Hausbesuche an?</summary><div class="acc__body"><p>Ja. Gerade bei Reha-Hilfsmitteln, Pflegebetten und eingeschränkter Mobilität kommen wir zu Ihnen nach Hause und beraten vor Ort.</p></div></details>
-      <details class="acc"><summary>Wie lange dauert die Anfertigung von Kompressionsstrümpfen?</summary><div class="acc__body"><p>Serienversorgungen sind meist sofort oder innerhalb weniger Tage verfügbar. Maßanfertigungen dauern je nach Hersteller in der Regel rund eine Woche.</p></div></details>
-      <details class="acc"><summary>Versorgen Sie auch nach Brustoperationen?</summary><div class="acc__body"><p>Ja, diskret und einfühlsam. Wir führen Brustprothesen, passende Wäsche und Bademoden und nehmen uns Zeit für eine ungestörte Beratung in separaten Räumen.</p></div></details>
-    </div>
-  </div>
-</section>
-
-<!-- ===== Kontakt / CTA ===== -->
-<section class="section section--cta" id="kontakt">
-  <div class="container kontakt">
+<!-- ===== Kontakt ===== -->
+<section class="block block--soft" id="kontakt">
+  <div class="wrap kontakt">
     <div class="kontakt__intro reveal">
-      <span class="eyebrow eyebrow--light"><span class="dot"></span> Kontakt</span>
-      <h2>Sprechen wir über Ihre Versorgung</h2>
-      <p>Rufen Sie an, schreiben Sie uns oder kommen Sie vorbei. Wir freuen uns auf Sie.</p>
+      <span class="kicker">Kontakt</span>
+      <h2>Sprechen wir<br>über Ihre Versorgung.</h2>
+      <p class="kontakt__sub">Rufen Sie an, schreiben Sie uns oder kommen Sie vorbei. Wir freuen uns auf Sie.</p>
       <ul class="kontakt__facts">
-        <li><svg class="ic" viewBox="0 0 24 24"><path d="M6.6 10.8a15.6 15.6 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.25 1z"/></svg> <a href="tel:+498954671230">089 546712-30</a></li>
-        <li><svg class="ic" viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 2v.4l8 5 8-5V6H4zm16 12V8.5l-7.4 4.6a1 1 0 0 1-1.2 0L4 8.5V18h16z"/></svg> <a href="mailto:sani@danzeisen.com">sani@danzeisen.com</a></li>
-        <li><svg class="ic" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg> Laim · Pasing · Neuhausen</li>
+        <li><span>Telefon</span><a href="tel:+498954671230">089 546712-30</a></li>
+        <li><span>E-Mail</span><a href="mailto:sani@danzeisen.com">sani@danzeisen.com</a></li>
+        <li><span>Öffnungszeiten</span><em>Mo–Fr 9–13 &amp; 14–18 · Sa 9–13</em></li>
       </ul>
-      <div class="hours-card">
-        <strong>Öffnungszeiten</strong>
-        <div class="hours-row"><span>Mo – Fr</span><span>09:00 – 13:00 · 14:00 – 18:00</span></div>
-        <div class="hours-row"><span>Samstag</span><span>09:00 – 13:00</span></div>
-        <div class="hours-row"><span>Sonntag</span><span>geschlossen</span></div>
-      </div>
     </div>
-
     <form class="kontakt__form reveal" id="contactForm" novalidate>
-      <div class="field">
-        <label for="cf-name">Name</label>
-        <input id="cf-name" name="name" type="text" required placeholder="Vor- und Nachname" />
-      </div>
+      <div class="field"><label for="cf-name">Name</label><input id="cf-name" name="name" type="text" required placeholder="Vor- und Nachname" /></div>
       <div class="field-row">
-        <div class="field">
-          <label for="cf-phone">Telefon</label>
-          <input id="cf-phone" name="phone" type="tel" placeholder="089 …" />
-        </div>
-        <div class="field">
-          <label for="cf-mail">E-Mail</label>
-          <input id="cf-mail" name="email" type="email" placeholder="name@mail.de" />
-        </div>
+        <div class="field"><label for="cf-phone">Telefon</label><input id="cf-phone" name="phone" type="tel" placeholder="089 …" /></div>
+        <div class="field"><label for="cf-mail">E-Mail</label><input id="cf-mail" name="email" type="email" placeholder="name@mail.de" /></div>
       </div>
-      <div class="field">
-        <label for="cf-topic">Anliegen</label>
+      <div class="field"><label for="cf-topic">Anliegen</label>
         <select id="cf-topic" name="topic">
-          <option>Allgemeine Beratung</option>
-          <option>Kompressionsversorgung</option>
-          <option>Bandagen &amp; Orthesen</option>
-          <option>Einlagen / Orthopädie</option>
-          <option>REHA-Technik</option>
-          <option>Brustprothese</option>
-          <option>Pflege &amp; Alltagshilfen</option>
+          <option>Allgemeine Beratung</option><option>Kompression</option><option>Orthopädie / Einlagen</option>
+          <option>Bandagen &amp; Orthesen</option><option>REHA-Technik</option><option>Gehhilfen &amp; Alltag</option>
         </select>
       </div>
-      <div class="field">
-        <label for="cf-msg">Nachricht</label>
-        <textarea id="cf-msg" name="message" rows="4" placeholder="Wie können wir helfen?"></textarea>
-      </div>
+      <div class="field"><label for="cf-msg">Nachricht</label><textarea id="cf-msg" name="message" rows="4" placeholder="Wie können wir helfen?"></textarea></div>
       <label class="check"><input type="checkbox" required /> <span>Ich bin mit der Kontaktaufnahme einverstanden.</span></label>
-      <button class="btn btn--primary btn--block btn--lg" type="submit">Nachricht senden</button>
+      <button class="btn btn--primary btn--block" type="submit">Nachricht senden</button>
       <p class="form-note" id="contactNote" role="status"></p>
     </form>
   </div>
@@ -528,50 +240,28 @@
 
 <!-- ===== Footer ===== -->
 <footer class="footer">
-  <div class="container footer__grid">
-    <div class="footer__brand">
-      <span class="brand">
-        <span class="brand__mark"><svg viewBox="0 0 48 48"><path d="M24 4C13 4 4 13 4 24s9 20 20 20 20-9 20-20S35 4 24 4zm9 23h-6v6h-6v-6h-6v-6h6v-6h6v6h6v6z"/></svg></span>
-        <span class="brand__text"><strong>Danzeisen</strong><small>Sanitätshaus seit 1928</small></span>
+  <div class="wrap footer__grid">
+    <div>
+      <span class="brand brand--footer">
+        <span class="brand__mark"><svg viewBox="0 0 32 32"><path d="M16 3a13 13 0 1 0 0 26 13 13 0 0 0 0-26zm6 15h-4v4h-4v-4h-4v-4h4v-4h4v4h4v4z"/></svg></span>
+        <span class="brand__txt"><strong>Danzeisen</strong><small>Sanitätshaus seit 1928</small></span>
       </span>
-      <p class="footer__about">Ihr inhabergeführtes Sanitätshaus in München. Qualität und Zuverlässigkeit zum Anfassen – in dritter Generation.</p>
+      <p class="footer__about">Ihr inhabergeführtes Sanitätshaus in München – Qualität und Zuverlässigkeit zum Anfassen, in dritter Generation.</p>
     </div>
-    <div class="footer__col">
-      <h4>Navigation</h4>
-      <a href="#leistungen">Leistungen</a>
-      <a href="#sortiment">Sortiment</a>
-      <a href="#reha">REHA-Team</a>
-      <a href="#standorte">Standorte</a>
-      <a href="#kontakt">Kontakt</a>
-    </div>
-    <div class="footer__col">
-      <h4>Sortiment</h4>
-      <a href="#sortiment">Kompression</a>
-      <a href="#sortiment">Bandagen &amp; Orthesen</a>
-      <a href="#sortiment">Einlagen</a>
-      <a href="#sortiment">Brustprothesen</a>
-      <a href="#sortiment">Alltagshilfen</a>
-    </div>
-    <div class="footer__col">
-      <h4>Kontakt</h4>
-      <a href="tel:+498954671230">089 546712-30</a>
-      <a href="mailto:sani@danzeisen.com">sani@danzeisen.com</a>
-      <span>Fürstenrieder Str. 34</span>
-      <span>80686 München-Laim</span>
-    </div>
+    <div class="footer__col"><h4>Produkte</h4><a href="#szenen">Kompression</a><a href="#szenen">Einlagen</a><a href="#szenen">Orthesen</a><a href="#szenen">Reha &amp; Mobilität</a></div>
+    <div class="footer__col"><h4>Haus</h4><a href="#leistungen">Leistungen</a><a href="#standorte">Standorte</a><a href="#service">Service</a><a href="#kontakt">Kontakt</a></div>
+    <div class="footer__col"><h4>Kontakt</h4><a href="tel:+498954671230">089 546712-30</a><a href="mailto:sani@danzeisen.com">sani@danzeisen.com</a><span>Fürstenrieder Str. 34</span><span>80686 München-Laim</span></div>
   </div>
-  <div class="container footer__bottom">
+  <div class="wrap footer__bottom">
     <span>© <span id="year"></span> Sanitätshaus Danzeisen GmbH · München</span>
-    <span class="footer__legal"><a href="#">Impressum</a> · <a href="#">Datenschutz</a> · <a href="#">Cookies</a></span>
+    <span class="footer__legal"><a href="#">Impressum</a> · <a href="#">Datenschutz</a></span>
   </div>
 </footer>
 
-<!-- Back to top -->
 <button class="totop" id="toTop" aria-label="Nach oben">↑</button>
-
-<!-- Toast -->
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<script type="module" src="js/scene.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
