@@ -106,6 +106,22 @@ button{font-family:inherit;cursor:pointer}
   background:radial-gradient(120% 120% at 0% 50%,rgba(255,255,255,.92) 0%,rgba(255,255,255,.7) 45%,rgba(255,255,255,0) 78%)}
 .scene[data-side="left"] .scene__copy::before{background:radial-gradient(120% 120% at 100% 50%,rgba(255,255,255,.92) 0%,rgba(255,255,255,.7) 45%,rgba(255,255,255,0) 78%)}
 
+/* ---- Splat-Szene (echter 3D-Scan) ---- */
+.scene--splat .scene__inner{justify-content:space-between;align-items:center;gap:30px}
+.scene__stage{position:relative;flex:1 1 52%;height:78vh;max-height:760px}
+.scene__stage::after{content:"";position:absolute;left:50%;bottom:8%;width:46%;height:40px;transform:translateX(-50%);
+  background:radial-gradient(ellipse,rgba(16,40,38,.16),transparent 70%);filter:blur(3px);z-index:0}
+.splat-frame{position:relative;z-index:1;width:100%;height:100%;border:0;background:transparent}
+.scene--splat .scene__copy{flex:0 0 auto}
+.scene__hint{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;
+  padding:9px 16px;font-size:.85rem;font-weight:500;color:var(--ink-soft);box-shadow:var(--shadow-sm)}
+@media(max-width:860px){
+  .scene--splat .scene__inner{flex-direction:column}
+  .scene__stage{flex:none;width:100%;height:56vh;order:-1}
+  .scene--splat .scene__copy{text-align:center}
+  .scene--splat .scene__tags{justify-content:center}
+}
+
 /* ---- Generic block ---- */
 .block{position:relative;z-index:3;background:var(--bg);padding:clamp(70px,10vw,130px) 0}
 .block--soft{background:var(--bg-soft)}

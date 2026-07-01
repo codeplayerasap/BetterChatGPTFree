@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>3D-Scan</title>
+<style>
+  html,body{margin:0;height:100%;background:transparent;overflow:hidden;cursor:grab}
+  body:active{cursor:grabbing}
+  #v{position:fixed;inset:0}
+  #v canvas{display:block}
+  .ld{position:fixed;inset:0;display:grid;place-items:center;background:#ffffff}
+  .ld.hide{opacity:0;transition:opacity .5s;pointer-events:none}
+  .sp{width:30px;height:30px;border-radius:50%;border:3px solid #d5e2e0;border-top-color:#0e8f8f;animation:s 1s linear infinite}
+  @keyframes s{to{transform:rotate(360deg)}}
+</style>
+<script type="importmap">
+{ "imports": {
+    "three": "./vendor/three.module.js",
+    "@mkkellogg/gaussian-splats-3d": "./vendor/gaussian-splats-3d.module.js"
+} }
+</script>
+</head>
+<body>
+  <div id="v"></div>
+  <div class="ld" id="ld"><div class="sp"></div></div>
+  <script type="module">
+    import * as GaussianSplats3D from '@mkkellogg/gaussian-splats-3d';
+    const ld = document.getElementById('ld');
+    try {
+      const viewer = new GaussianSplats3D.Viewer({
+        rootElement: document.getElementById('v'),
+        cameraUp: [0, 0, 1],
+        initialCameraPosition: [-2.4, -0.2, 0.15],
+        initialCameraLookAt: [0, 0, 0],
+        sharedMemoryForWorkers: false,
+        antialiased: true,
+        useBuiltInControls: true,
+        dynamicScene: false
+      });
+      viewer.addSplatScene('assets/scan.ply', { splatAlphaRemovalThreshold: 5, showLoadingUI: false, progressiveLoad: true })
+        .then(() => {
+          viewer.start();
+          ld.classList.add('hide');
+          if (viewer.controls) {
+            viewer.controls.autoRotate = true;
+            viewer.controls.autoRotateSpeed = 1.6;
+            viewer.controls.enableDamping = true;
+            viewer.controls.dampingFactor = 0.08;
+            viewer.controls.enablePan = false;
+            viewer.controls.minDistance = 1.2;
+            viewer.controls.maxDistance = 5;
+          }
+        }).catch(e => { ld.innerHTML = '<div style="font:500 14px sans-serif;color:#b23b2e;text-align:center;padding:20px">3D-Scan konnte nicht geladen werden.<br>Bitte aktuellen Browser mit WebGL2 nutzen.</div>'; console.error(e); });
+    } catch (e) { console.error(e); }
+  </script>
+</body>
+</html>
