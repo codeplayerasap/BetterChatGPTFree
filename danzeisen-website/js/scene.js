@@ -29,7 +29,7 @@ function init() {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.05;
+  renderer.toneMappingExposure = 1.06;
 
   const scene = new THREE.Scene();
 
@@ -70,33 +70,90 @@ function init() {
   }
   const shadowTex = makeShadowTexture();
 
+  /* ---------- Prozedurale Oberflächen-Texturen (Canvas, keine Assets) ---------- */
+  const maxAniso = renderer.capabilities.getMaxAnisotropy();
+  function tex(size, draw, repeat) {
+    const c = document.createElement('canvas'); c.width = c.height = size;
+    draw(c.getContext('2d'), size);
+    const t = new THREE.CanvasTexture(c);
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    t.colorSpace = THREE.NoColorSpace;
+    t.anisotropy = maxAniso;
+    if (repeat) t.repeat.set(repeat[0], repeat[1]);
+    return t;
+  }
+  // feiner Strick (vertikale Rippen) – für die Kompressionssocke
+  const T_knit = tex(128, (x, s) => {
+    for (let i = 0; i < s; i++) {
+      const h = 132 + 96 * Math.sin((i / s) * Math.PI * 10);
+      x.fillStyle = `rgb(${h | 0},${h | 0},${h | 0})`; x.fillRect(i, 0, 1, s);
+    }
+    for (let k = 0; k < 4000; k++) { x.fillStyle = `rgba(255,255,255,0.05)`; x.fillRect(Math.random() * s, Math.random() * s, 1, 1); }
+  }, [18, 8]);
+  // Gewebe/Neopren (Kreuzstruktur) – für Orthese, Gurte
+  const T_weave = tex(128, (x, s) => {
+    x.fillStyle = '#808080'; x.fillRect(0, 0, s, s);
+    const step = 10;
+    for (let i = 0; i < s; i += step) {
+      x.fillStyle = 'rgba(255,255,255,0.28)'; x.fillRect(i, 0, step / 2, s);
+      x.fillStyle = 'rgba(0,0,0,0.28)'; x.fillRect(0, i, s, step / 2);
+    }
+    for (let k = 0; k < 6000; k++) { x.fillStyle = `rgba(0,0,0,0.05)`; x.fillRect(Math.random() * s, Math.random() * s, 1, 1); }
+  }, [7, 5]);
+  // gebürstetes Metall (feine horizontale Linien) – Rauheitskarte
+  const T_brushed = tex(256, (x, s) => {
+    x.fillStyle = '#b8b8b8'; x.fillRect(0, 0, s, s);
+    for (let k = 0; k < 9000; k++) {
+      const y = Math.random() * s, len = 20 + Math.random() * 80, g = 150 + Math.random() * 90;
+      x.strokeStyle = `rgba(${g | 0},${g | 0},${g | 0},0.18)`; x.beginPath();
+      x.moveTo(Math.random() * s, y); x.lineTo(Math.random() * s + len, y); x.stroke();
+    }
+  }, [3, 3]);
+  // Mikro-Rauheit (Schaum/Haut/Gummi) – dezentes Rauschen
+  function noiseRough(lo, hi, rep) {
+    return tex(128, (x, s) => {
+      const img = x.createImageData(s, s);
+      for (let i = 0; i < img.data.length; i += 4) {
+        const v = (lo + Math.random() * (hi - lo)) * 255;
+        img.data[i] = img.data[i + 1] = img.data[i + 2] = v; img.data[i + 3] = 255;
+      }
+      x.putImageData(img, 0, 0);
+    }, rep || [4, 4]);
+  }
+  const T_foamRough = noiseRough(0.6, 0.95, [3, 3]);
+  const T_skinRough = noiseRough(0.45, 0.7, [2, 3]);
+  const T_rubberRough = noiseRough(0.7, 0.95, [6, 2]);
+
   /* ---------- Materials (an echten Produkten orientiert) ---------- */
   const M = {
-    skin: new THREE.MeshPhysicalMaterial({ color: 0xeac3a3, roughness: 0.62, metalness: 0.0, sheen: 0.4, sheenColor: new THREE.Color(0xd89a78), clearcoat: 0.06 }),
+    skin: new THREE.MeshPhysicalMaterial({ color: 0xeac3a3, roughness: 0.62, metalness: 0.0, sheen: 0.4, sheenColor: new THREE.Color(0xd89a78), clearcoat: 0.06, roughnessMap: T_skinRough, bumpMap: T_skinRough, bumpScale: 0.004 }),
     // schwarze Strick-Kompressionssocke
-    sock: new THREE.MeshPhysicalMaterial({ color: 0x141519, roughness: 0.62, metalness: 0.0, sheen: 0.8, sheenColor: new THREE.Color(0x3a3f4a), sheenRoughness: 0.55 }),
-    sockBand: new THREE.MeshStandardMaterial({ color: 0x0d0e11, roughness: 0.7 }),
+    sock: new THREE.MeshPhysicalMaterial({ color: 0x0e0f12, roughness: 0.72, metalness: 0.0, sheen: 0.4, sheenColor: new THREE.Color(0x23262d), sheenRoughness: 0.5, bumpMap: T_knit, bumpScale: 0.014 }),
+    sockBand: new THREE.MeshStandardMaterial({ color: 0x0d0e11, roughness: 0.72, bumpMap: T_knit, bumpScale: 0.02 }),
     // schwarze Neopren/Stoff-Orthese
-    braceBlack: new THREE.MeshPhysicalMaterial({ color: 0x17181c, roughness: 0.82, metalness: 0.0, sheen: 0.5, sheenColor: new THREE.Color(0x2a2c31) }),
-    velcro: new THREE.MeshStandardMaterial({ color: 0x101114, roughness: 0.95 }),
-    metal: new THREE.MeshStandardMaterial({ color: 0xd9dee4, roughness: 0.24, metalness: 1.0 }),
-    metalDark: new THREE.MeshStandardMaterial({ color: 0x878d96, roughness: 0.32, metalness: 1.0 }),
+    braceBlack: new THREE.MeshPhysicalMaterial({ color: 0x17181c, roughness: 0.84, metalness: 0.0, sheen: 0.5, sheenColor: new THREE.Color(0x2a2c31), bumpMap: T_weave, bumpScale: 0.02, roughnessMap: T_weave }),
+    velcro: new THREE.MeshStandardMaterial({ color: 0x101114, roughness: 0.95, bumpMap: T_weave, bumpScale: 0.03 }),
+    metal: new THREE.MeshStandardMaterial({ color: 0xd9dee4, roughness: 0.26, metalness: 1.0, roughnessMap: T_brushed }),
+    metalDark: new THREE.MeshStandardMaterial({ color: 0x878d96, roughness: 0.34, metalness: 1.0, roughnessMap: T_brushed }),
     red: new THREE.MeshStandardMaterial({ color: 0xd6212a, roughness: 0.4, metalness: 0.1 }),
     // Einlage mehrfarbig
-    foamYellow: new THREE.MeshStandardMaterial({ color: 0xf6c02f, roughness: 0.7 }),
-    foamBlack: new THREE.MeshStandardMaterial({ color: 0x1b1d22, roughness: 0.8 }),
-    foamBlue: new THREE.MeshStandardMaterial({ color: 0x1f6fe0, roughness: 0.6 }),
+    foamYellow: new THREE.MeshStandardMaterial({ color: 0xf6c02f, roughness: 0.72, roughnessMap: T_foamRough, bumpMap: T_foamRough, bumpScale: 0.01 }),
+    foamBlack: new THREE.MeshStandardMaterial({ color: 0x1b1d22, roughness: 0.82, roughnessMap: T_foamRough, bumpMap: T_foamRough, bumpScale: 0.008 }),
+    foamBlue: new THREE.MeshStandardMaterial({ color: 0x1f6fe0, roughness: 0.6, roughnessMap: T_foamRough }),
     foamRed: new THREE.MeshStandardMaterial({ color: 0xe23a2e, roughness: 0.55 }),
     // Rollstuhl
-    frame: new THREE.MeshStandardMaterial({ color: 0x202329, roughness: 0.5, metalness: 0.65 }),
-    rubber: new THREE.MeshStandardMaterial({ color: 0x141619, roughness: 0.85, metalness: 0.0 }),
-    seat: new THREE.MeshStandardMaterial({ color: 0x141518, roughness: 0.92 }),
+    frame: new THREE.MeshStandardMaterial({ color: 0x202329, roughness: 0.5, metalness: 0.65, roughnessMap: T_brushed }),
+    rubber: new THREE.MeshStandardMaterial({ color: 0x141619, roughness: 0.88, metalness: 0.0, roughnessMap: T_rubberRough, bumpMap: T_rubberRough, bumpScale: 0.01 }),
+    seat: new THREE.MeshStandardMaterial({ color: 0x141518, roughness: 0.92, bumpMap: T_weave, bumpScale: 0.015 }),
     // Gehstock
-    chrome: new THREE.MeshStandardMaterial({ color: 0xe2e6ea, roughness: 0.16, metalness: 1.0 }),
-    chromeSoft: new THREE.MeshStandardMaterial({ color: 0xc6ccd2, roughness: 0.3, metalness: 0.9 }),
+    chrome: new THREE.MeshStandardMaterial({ color: 0xe2e6ea, roughness: 0.18, metalness: 1.0, roughnessMap: T_brushed }),
+    chromeSoft: new THREE.MeshStandardMaterial({ color: 0xc6ccd2, roughness: 0.3, metalness: 0.9, roughnessMap: T_brushed }),
     silicone: new THREE.MeshPhysicalMaterial({ color: 0x26282e, roughness: 0.5, metalness: 0, clearcoat: 0.4 }),
     accent: new THREE.MeshStandardMaterial({ color: 0x0e8f8f, roughness: 0.38, metalness: 0.12 })
   };
+
+  // kräftigere Reflexionen auf Metallteilen
+  [M.metal, M.metalDark, M.chrome, M.chromeSoft, M.frame].forEach(m => { m.envMapIntensity = 1.3; });
 
   function shadowy(obj) { return obj; }
 
