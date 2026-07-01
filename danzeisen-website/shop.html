@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Shop · Sanitätshaus Danzeisen München</title>
+<meta name="description" content="Online-Shop des Sanitätshaus Danzeisen: Kompression, Bandagen & Orthesen, Einlagen, Reha & Mobilität, Pflege und mehr – viele Artikel als Kassenleistung." />
+<meta name="theme-color" content="#ffffff" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+<a class="skip-link" href="#shopMain">Zum Inhalt springen</a>
+
+<header class="nav is-stuck" id="nav">
+  <div class="wrap nav__inner">
+    <a href="index.html" class="brand" aria-label="Sanitätshaus Danzeisen – Startseite">
+      <img class="brand__logo" src="assets/logo.svg" alt="Sanitätshaus Danzeisen" width="200" height="60" />
+    </a>
+    <nav class="nav__links" id="navLinks" aria-label="Hauptnavigation">
+      <a href="index.html#szenen">Produkte</a>
+      <a href="index.html#leistungen">Leistungen</a>
+      <a href="index.html#standorte">Standorte</a>
+      <a href="shop.html" class="is-current">Shop</a>
+      <a href="cart.html" class="nav__cart" aria-label="Warenkorb">🛒<span class="cart-badge" data-cart-count style="display:none">0</span></a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Menü" aria-expanded="false"><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="shopMain">
+  <section class="shop-hero">
+    <div class="wrap">
+      <nav class="crumbs"><a href="index.html">Start</a> › <span>Shop</span></nav>
+      <span class="kicker">Online-Shop</span>
+      <h1>Alles für Gesundheit &amp; Mobilität</h1>
+      <p>Über 50 Hilfsmittel – viele davon Kassenleistung. Online ansehen, in den Warenkorb legen und in der Filiale abholen oder liefern lassen.</p>
+    </div>
+  </section>
+
+  <section class="shop-body wrap">
+    <div class="shop-toolbar">
+      <div class="filters" id="shopFilters"></div>
+      <div class="shop-tools">
+        <div class="search">
+          <svg class="ic" viewBox="0 0 24 24"><path d="m21 21-4.3-4.3M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <input type="search" id="shopSearch" placeholder="Suchen … z. B. Rollator" aria-label="Produkte suchen" />
+        </div>
+        <select id="shopSort" aria-label="Sortierung">
+          <option value="rel">Empfohlen</option>
+          <option value="price-asc">Preis aufsteigend</option>
+          <option value="price-desc">Preis absteigend</option>
+          <option value="name">Name A–Z</option>
+        </select>
+      </div>
+    </div>
+    <p class="shop-count" id="shopCount"></p>
+    <div class="shop-grid" id="shopGrid"></div>
+    <p class="shop-empty" id="shopEmpty" hidden>Keine Treffer. Rufen Sie uns an – wir helfen persönlich: <a href="tel:+498954671230">089 546712-30</a>.</p>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer__grid">
+    <div>
+      <span class="footer__logo"><img src="assets/logo.svg" alt="Sanitätshaus Danzeisen" width="210" height="63" /></span>
+      <p class="footer__about">Ihr inhabergeführtes Sanitätshaus in München – Qualität und Zuverlässigkeit zum Anfassen, seit 1928.</p>
+    </div>
+    <div class="footer__col"><h4>Shop</h4><a href="shop.html">Alle Artikel</a><a href="shop.html?cat=kompression">Kompression</a><a href="shop.html?cat=reha">Reha &amp; Mobilität</a><a href="cart.html">Warenkorb</a></div>
+    <div class="footer__col"><h4>Haus</h4><a href="index.html#leistungen">Leistungen</a><a href="index.html#standorte">Standorte</a><a href="index.html#kontakt">Kontakt</a></div>
+    <div class="footer__col"><h4>Kontakt</h4><a href="tel:+498954671230">089 546712-30</a><a href="mailto:sani@danzeisen.com">sani@danzeisen.com</a><span>Fürstenrieder Str. 34</span><span>80686 München-Laim</span></div>
+  </div>
+  <div class="wrap footer__bottom">
+    <span>© <span id="year"></span> Sanitätshaus Danzeisen GmbH · München · Demo-Shop</span>
+    <span class="footer__legal"><a href="#">Impressum</a> · <a href="#">Datenschutz</a> · <a href="#">AGB</a></span>
+  </div>
+</footer>
+
+<script src="js/shop-data.js"></script>
+<script src="js/shop-core.js"></script>
+<script src="js/shop.js"></script>
+<script src="js/shop-nav.js"></script>
+</body>
+</html>
