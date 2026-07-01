@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Echter 3D-Scan · Kniebandage · Danzeisen</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet" />
+<style>
+  :root{--teal:#0e8f8f;--ink:#15201f;--muted:#7a908b}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:#eef2f2;overflow:hidden}
+  #viewer{position:fixed;inset:0}
+  #viewer canvas{display:block}
+  .topbar{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;
+    padding:16px 22px;background:linear-gradient(#ffffffee,#ffffff00);pointer-events:none}
+  .topbar img{height:44px;pointer-events:auto}
+  .badge{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid #e3edeb;border-radius:999px;
+    padding:8px 15px;font-size:.82rem;font-weight:600;color:var(--teal);box-shadow:0 6px 18px -8px rgba(15,60,58,.3);pointer-events:auto}
+  .badge::before{content:"";width:8px;height:8px;border-radius:50%;background:#39d98a;box-shadow:0 0 0 4px rgba(57,217,138,.2)}
+  .caption{position:fixed;left:0;right:0;bottom:26px;z-index:10;text-align:center;pointer-events:none}
+  .caption h1{font-family:'Newsreader',serif;font-weight:600;font-size:clamp(1.3rem,3vw,2rem);margin:0 0 6px}
+  .caption p{margin:0;color:var(--muted);font-size:.92rem}
+  .caption .hint{display:inline-flex;align-items:center;gap:8px;margin-top:12px;background:#fff;border:1px solid #e3edeb;
+    border-radius:999px;padding:8px 16px;font-size:.85rem;font-weight:500;box-shadow:0 6px 18px -8px rgba(15,60,58,.25);pointer-events:auto}
+  .loading{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:#eef2f2;transition:opacity .5s}
+  .loading.hide{opacity:0;pointer-events:none}
+  .spin{width:34px;height:34px;border-radius:50%;border:3px solid #d5e2e0;border-top-color:var(--teal);animation:s 1s linear infinite}
+  @keyframes s{to{transform:rotate(360deg)}}
+  .err{max-width:520px;padding:24px;text-align:center;color:#b23b2e;font-weight:500}
+  .back{position:fixed;left:22px;bottom:26px;z-index:11;pointer-events:auto;color:var(--teal);font-weight:600;font-size:.9rem;text-decoration:none;background:#fff;border:1px solid #e3edeb;border-radius:999px;padding:8px 15px}
+</style>
+<script type="importmap">
+{ "imports": {
+    "three": "./vendor/three.module.js",
+    "@mkkellogg/gaussian-splats-3d": "./vendor/gaussian-splats-3d.module.js"
+} }
+</script>
+</head>
+<body>
+  <div id="viewer"></div>
+  <div class="topbar">
+    <img src="assets/logo.svg" alt="Sanitätshaus Danzeisen" />
+    <span class="badge">Echter 3D-Scan</span>
+  </div>
+  <div class="caption">
+    <h1>Kniebandage</h1>
+    <p>Fotorealistischer 3D-Scan · Gaussian Splatting</p>
+    <div><span class="hint">🖱️ Ziehen zum Drehen · Scrollen zum Zoomen</span></div>
+  </div>
+  <a class="back" href="index.html">← Zur Website</a>
+  <div class="loading" id="loading"><div class="spin"></div></div>
+
+  <script type="module">
+    import * as GaussianSplats3D from '@mkkellogg/gaussian-splats-3d';
+
+    const loading = document.getElementById('loading');
+    try {
+      const viewer = new GaussianSplats3D.Viewer({
+        rootElement: document.getElementById('viewer'),
+        cameraUp: [0, 0, 1],
+        initialCameraPosition: [-2.4, -0.2, 0.15],
+        initialCameraLookAt: [0, 0, 0],
+        sharedMemoryForWorkers: false,
+        antialiased: true,
+        halfPrecisionCovariancesOnGPU: true,
+        useBuiltInControls: true,
+        dynamicScene: false
+      });
+
+      viewer.addSplatScene('assets/scan.ply', {
+        splatAlphaRemovalThreshold: 5,
+        showLoadingUI: false,
+        progressiveLoad: true
+      }).then(() => {
+        viewer.start();
+        loading.classList.add('hide');
+        // sanfte Auto-Rotation
+        if (viewer.controls) {
+          viewer.controls.autoRotate = true;
+          viewer.controls.autoRotateSpeed = 1.4;
+          viewer.controls.enableDamping = true;
+          viewer.controls.dampingFactor = 0.08;
+        }
+      }).catch(err => showError(err));
+    } catch (err) { showError(err); }
+
+    function showError(err) {
+      console.error(err);
+      loading.innerHTML = '<div class="err">Der 3D-Scan konnte nicht geladen werden.<br>' +
+        'Bitte einen aktuellen Browser (Chrome, Edge, Safari, Firefox) mit WebGL2 verwenden.<br><br>' +
+        '<small>' + (err && err.message ? err.message : err) + '</small></div>';
+    }
+  </script>
+</body>
+</html>
