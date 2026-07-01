@@ -70,19 +70,32 @@ function init() {
   }
   const shadowTex = makeShadowTexture();
 
-  /* ---------- Materials ---------- */
+  /* ---------- Materials (an echten Produkten orientiert) ---------- */
   const M = {
-    skin: new THREE.MeshStandardMaterial({ color: 0xe7c0a4, roughness: 0.72, metalness: 0.0 }),
-    stocking: new THREE.MeshPhysicalMaterial({ color: 0x262a36, roughness: 0.42, metalness: 0.0, sheen: 1.0, sheenColor: new THREE.Color(0x7d93b5), sheenRoughness: 0.6, clearcoat: 0.25, clearcoatRoughness: 0.5 }),
-    silicone: new THREE.MeshPhysicalMaterial({ color: 0x3a3f4d, roughness: 0.5, metalness: 0, clearcoat: 0.4 }),
-    foam: new THREE.MeshStandardMaterial({ color: 0x12a39b, roughness: 0.85, metalness: 0.0 }),
-    foamDark: new THREE.MeshStandardMaterial({ color: 0x0c6f6a, roughness: 0.9 }),
+    skin: new THREE.MeshPhysicalMaterial({ color: 0xeac3a3, roughness: 0.62, metalness: 0.0, sheen: 0.4, sheenColor: new THREE.Color(0xd89a78), clearcoat: 0.06 }),
+    // schwarze Strick-Kompressionssocke
+    sock: new THREE.MeshPhysicalMaterial({ color: 0x141519, roughness: 0.62, metalness: 0.0, sheen: 0.8, sheenColor: new THREE.Color(0x3a3f4a), sheenRoughness: 0.55 }),
+    sockBand: new THREE.MeshStandardMaterial({ color: 0x0d0e11, roughness: 0.7 }),
+    // schwarze Neopren/Stoff-Orthese
+    braceBlack: new THREE.MeshPhysicalMaterial({ color: 0x17181c, roughness: 0.82, metalness: 0.0, sheen: 0.5, sheenColor: new THREE.Color(0x2a2c31) }),
+    velcro: new THREE.MeshStandardMaterial({ color: 0x101114, roughness: 0.95 }),
+    metal: new THREE.MeshStandardMaterial({ color: 0xd9dee4, roughness: 0.24, metalness: 1.0 }),
+    metalDark: new THREE.MeshStandardMaterial({ color: 0x878d96, roughness: 0.32, metalness: 1.0 }),
+    red: new THREE.MeshStandardMaterial({ color: 0xd6212a, roughness: 0.4, metalness: 0.1 }),
+    // Einlage mehrfarbig
+    foamYellow: new THREE.MeshStandardMaterial({ color: 0xf6c02f, roughness: 0.7 }),
+    foamBlack: new THREE.MeshStandardMaterial({ color: 0x1b1d22, roughness: 0.8 }),
+    foamBlue: new THREE.MeshStandardMaterial({ color: 0x1f6fe0, roughness: 0.6 }),
+    foamRed: new THREE.MeshStandardMaterial({ color: 0xe23a2e, roughness: 0.55 }),
+    // Rollstuhl
+    frame: new THREE.MeshStandardMaterial({ color: 0x202329, roughness: 0.5, metalness: 0.65 }),
+    rubber: new THREE.MeshStandardMaterial({ color: 0x141619, roughness: 0.85, metalness: 0.0 }),
+    seat: new THREE.MeshStandardMaterial({ color: 0x141518, roughness: 0.92 }),
+    // Gehstock
     chrome: new THREE.MeshStandardMaterial({ color: 0xe2e6ea, roughness: 0.16, metalness: 1.0 }),
     chromeSoft: new THREE.MeshStandardMaterial({ color: 0xc6ccd2, roughness: 0.3, metalness: 0.9 }),
-    rubber: new THREE.MeshStandardMaterial({ color: 0x191c21, roughness: 0.82, metalness: 0.0 }),
-    fabric: new THREE.MeshStandardMaterial({ color: 0x242832, roughness: 0.95, metalness: 0.0 }),
-    accent: new THREE.MeshStandardMaterial({ color: 0x0e8f8f, roughness: 0.38, metalness: 0.12 }),
-    seat: new THREE.MeshStandardMaterial({ color: 0x2b3038, roughness: 0.9 })
+    silicone: new THREE.MeshPhysicalMaterial({ color: 0x26282e, roughness: 0.5, metalness: 0, clearcoat: 0.4 }),
+    accent: new THREE.MeshStandardMaterial({ color: 0x0e8f8f, roughness: 0.38, metalness: 0.12 })
   };
 
   function shadowy(obj) { return obj; }
@@ -92,19 +105,24 @@ function init() {
      ====================================================== */
   function buildLeg() {
     const g = new THREE.Group();
+    // Kniestrumpf-Bein (Ferse unten … unter dem Knie oben)
     const pts = [
       [0.00, -2.20], [0.34, -2.20], [0.40, -1.70], [0.55, -1.05], [0.66, -0.45],
-      [0.62, 0.10], [0.50, 0.55], [0.54, 1.10], [0.64, 1.75], [0.74, 2.45], [0.00, 2.55]
+      [0.62, 0.10], [0.50, 0.55], [0.54, 1.10], [0.64, 1.75], [0.72, 2.35], [0.70, 2.55], [0.00, 2.55]
     ].map(p => new THREE.Vector2(p[0], p[1]));
-    const leg = new THREE.Mesh(new THREE.LatheGeometry(pts, 96), M.stocking);
+    const leg = new THREE.Mesh(new THREE.LatheGeometry(pts, 96), M.sock);
     g.add(leg);
-    // Silikon-Haftband oben
-    const band = new THREE.Mesh(new THREE.TorusGeometry(0.72, 0.05, 16, 96), M.silicone);
-    band.position.y = 2.3; band.rotation.x = Math.PI / 2;
-    g.add(band);
-    // feiner Fuß-Andeutung (abgeflachte Kugel)
-    const foot = new THREE.Mesh(new THREE.SphereGeometry(0.42, 32, 24), M.stocking);
-    foot.scale.set(1, 0.62, 1.5); foot.position.set(0, -2.2, 0.32);
+    // oberer Bund (Rippstrick etwas dunkler)
+    const cuff = new THREE.Mesh(new THREE.CylinderGeometry(0.73, 0.72, 0.34, 64, 1, true), M.sockBand);
+    cuff.position.y = 2.36; g.add(cuff);
+    // --- Fuß (Socke) ---
+    const foot = new THREE.Group();
+    const instep = new THREE.Mesh(new THREE.SphereGeometry(0.42, 40, 28), M.sock);
+    instep.scale.set(0.92, 0.6, 1.75); instep.position.set(0, -2.18, 0.42); foot.add(instep);
+    const toe = new THREE.Mesh(new THREE.SphereGeometry(0.3, 32, 24), M.sock);
+    toe.scale.set(0.9, 0.62, 0.7); toe.position.set(0, -2.28, 1.18); foot.add(toe);
+    const heel = new THREE.Mesh(new THREE.SphereGeometry(0.33, 28, 22), M.sock);
+    heel.scale.set(0.9, 0.9, 0.85); heel.position.set(0, -2.05, -0.28); foot.add(heel);
     g.add(foot);
     return shadowy(g);
   }
@@ -112,34 +130,51 @@ function init() {
   /* ======================================================
      PRODUKT 2 — Orthopädische Einlage (Extrude + Wölbung)
      ====================================================== */
-  function buildInsole() {
+  function insoleShape(scale) {
+    const k = scale || 1;
     const s = new THREE.Shape();
-    // Sohlenkontur in XY (x=Breite, y=Länge: Ferse unten, Zehen oben)
-    s.moveTo(0, -2.0);
-    s.bezierCurveTo(0.7, -2.0, 0.75, -1.1, 0.66, -0.4);
-    s.bezierCurveTo(0.58, 0.2, 0.74, 0.7, 0.78, 1.25);
-    s.bezierCurveTo(0.8, 1.9, 0.45, 2.25, 0.0, 2.25);
-    s.bezierCurveTo(-0.45, 2.25, -0.8, 1.9, -0.78, 1.25);
-    s.bezierCurveTo(-0.74, 0.7, -0.58, 0.2, -0.66, -0.4);
-    s.bezierCurveTo(-0.75, -1.1, -0.7, -2.0, 0.0, -2.0);
-    const geo = new THREE.ExtrudeGeometry(s, { depth: 0.16, bevelEnabled: true, bevelThickness: 0.08, bevelSize: 0.08, bevelSegments: 4, curveSegments: 48 });
-    geo.center();
-    // Wölbung: Längsgewölbe + Fersenmulde durch Anheben der Vertices
+    s.moveTo(0, -2.0 * k);
+    s.bezierCurveTo(0.7 * k, -2.0 * k, 0.75 * k, -1.1 * k, 0.66 * k, -0.4 * k);
+    s.bezierCurveTo(0.58 * k, 0.2 * k, 0.74 * k, 0.7 * k, 0.78 * k, 1.25 * k);
+    s.bezierCurveTo(0.8 * k, 1.9 * k, 0.45 * k, 2.25 * k, 0.0, 2.25 * k);
+    s.bezierCurveTo(-0.45 * k, 2.25 * k, -0.8 * k, 1.9 * k, -0.78 * k, 1.25 * k);
+    s.bezierCurveTo(-0.74 * k, 0.7 * k, -0.58 * k, 0.2 * k, -0.66 * k, -0.4 * k);
+    s.bezierCurveTo(-0.75 * k, -1.1 * k, -0.7 * k, -2.0 * k, 0.0, -2.0 * k);
+    return s;
+  }
+  function archify(geo, amp) {
     const pos = geo.attributes.position;
     for (let i = 0; i < pos.count; i++) {
       const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
-      // Längsgewölbe (medial betont) zur Kamera (+Z), dezente Fersenmulde
-      const arch = Math.cos(clamp(y / 2.4, -1, 1) * 1.15) * 0.30 * Math.max(0, 1 - Math.abs(x) / 0.85);
+      const arch = Math.cos(clamp(y / 2.4, -1, 1) * 1.15) * amp * Math.max(0, 1 - Math.abs(x) / 0.85);
       const heelCup = (y < -0.7 ? Math.min(0.16, Math.abs(x) * 0.22) : 0);
       pos.setZ(i, z + arch + heelCup);
     }
     geo.computeVertexNormals();
-    const mesh = new THREE.Mesh(geo, M.foam);
-    // aufrecht stehend (Ferse unten, Zehen oben), Fußbett zeigt zur Kamera, leicht zurückgelehnt
-    mesh.rotation.x = -0.18;
+  }
+  function buildInsole() {
     const g = new THREE.Group();
-    g.add(mesh);
-    return shadowy(g);
+    // gelber Grundkörper
+    const bodyGeo = new THREE.ExtrudeGeometry(insoleShape(1), { depth: 0.18, bevelEnabled: true, bevelThickness: 0.08, bevelSize: 0.08, bevelSegments: 4, curveSegments: 48 });
+    bodyGeo.center(); archify(bodyGeo, 0.28);
+    g.add(new THREE.Mesh(bodyGeo, M.foamYellow));
+    // schwarzes Fußbett (oben, etwas kleiner, nach +Z)
+    const topGeo = new THREE.ExtrudeGeometry(insoleShape(0.9), { depth: 0.06, bevelEnabled: true, bevelThickness: 0.04, bevelSize: 0.05, bevelSegments: 3, curveSegments: 48 });
+    topGeo.center(); archify(topGeo, 0.30);
+    const top = new THREE.Mesh(topGeo, M.foamBlack); top.position.z = 0.12; g.add(top);
+    // blaue Stützzonen: Ferse + Vorfuß (flache, leicht gewölbte Pads)
+    function pad(y, sx, sy, mat) {
+      const p = new THREE.Mesh(new THREE.SphereGeometry(0.5, 28, 20), mat);
+      p.scale.set(sx, sy, 0.12); p.position.set(0, y, 0.2); return p;
+    }
+    g.add(pad(-1.35, 1.15, 1.05, M.foamBlue)); // Ferse
+    g.add(pad(1.25, 1.05, 1.2, M.foamBlue));  // Vorfuß
+    // roter Punkt (Fersen-Dämpfer)
+    const dot = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.08, 28), M.foamRed);
+    dot.rotation.x = Math.PI / 2; dot.position.set(0, -1.4, 0.32); g.add(dot);
+    g.rotation.x = -0.18;
+    const wrap = new THREE.Group(); wrap.add(g);
+    return shadowy(wrap);
   }
 
   /* ======================================================
@@ -147,34 +182,70 @@ function init() {
      ====================================================== */
   function buildBrace() {
     const g = new THREE.Group();
-    // Bein-Segment
-    const legPts = [
-      [0.0, -2.0], [0.5, -2.0], [0.52, -1.2], [0.6, -0.2], [0.66, 0.0],
-      [0.6, 0.2], [0.52, 1.2], [0.5, 2.0], [0.0, 2.0]
-    ].map(p => new THREE.Vector2(p[0], p[1]));
-    const leg = new THREE.Mesh(new THREE.LatheGeometry(legPts, 64), M.skin);
-    g.add(leg);
-    // Stoff-Manschette
-    const sleevePts = [
-      [0.0, -1.5], [0.6, -1.5], [0.64, -0.6], [0.72, 0.0], [0.64, 0.6], [0.6, 1.5], [0.0, 1.5]
-    ].map(p => new THREE.Vector2(p[0], p[1]));
-    const sleeve = new THREE.Mesh(new THREE.LatheGeometry(sleevePts, 64), M.fabric);
-    g.add(sleeve);
-    // Seitliche Scharniere + Streben
+    const BEND = 0.34; // Kniebeugung (rad)
+
+    // ---------- Bein (Haut) ----------
+    // Oberschenkel (fix)
+    const thigh = new THREE.Mesh(new THREE.CylinderGeometry(0.84, 0.62, 2.5, 48), M.skin);
+    thigh.position.y = 1.3; g.add(thigh);
+    // Kniegelenk
+    const knee = new THREE.Mesh(new THREE.SphereGeometry(0.64, 44, 34), M.skin);
+    knee.scale.set(1.0, 0.94, 1.04); g.add(knee);
+    const patella = new THREE.Mesh(new THREE.SphereGeometry(0.3, 28, 22), M.skin);
+    patella.scale.set(1.15, 1.3, 0.6); patella.position.set(0, -0.04, 0.5); g.add(patella);
+
+    // Unterschenkel (gebeugte Untergruppe)
+    const lower = new THREE.Group();
+    const shin = new THREE.Mesh(new THREE.CylinderGeometry(0.58, 0.4, 2.5, 48), M.skin);
+    shin.position.y = -1.3; lower.add(shin);
+    const calf = new THREE.Mesh(new THREE.SphereGeometry(0.42, 30, 24), M.skin);
+    calf.scale.set(1.0, 1.8, 0.9); calf.position.set(0, -0.9, -0.24); lower.add(calf);
+    // Fuß
+    const sole = new THREE.Mesh(new THREE.SphereGeometry(0.4, 30, 22), M.skin);
+    sole.scale.set(0.9, 0.5, 1.6); sole.position.set(0, -2.62, 0.42); lower.add(sole);
+    const heel = new THREE.Mesh(new THREE.SphereGeometry(0.33, 22, 18), M.skin);
+    heel.scale.set(0.9, 0.85, 0.9); heel.position.set(0, -2.5, -0.12); lower.add(heel);
+    lower.rotation.x = BEND; g.add(lower);
+
+    // ---------- Orthese (schwarz) ----------
+    // Manschetten (offene, leicht bauchige Stoffringe)
+    const thighCuff = new THREE.Mesh(new THREE.CylinderGeometry(0.92, 0.8, 1.2, 48, 1, true), M.braceBlack);
+    thighCuff.position.y = 1.4; g.add(thighCuff);
+    const lowerBrace = new THREE.Group();
+    const shinCuff = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.56, 1.15, 48, 1, true), M.braceBlack);
+    shinCuff.position.y = -1.45; lowerBrace.add(shinCuff);
+
+    // Klett-Gurte (flach) + Lasche
+    function strap(r, y) {
+      const s = new THREE.Mesh(new THREE.TorusGeometry(r, 0.11, 16, 56), M.velcro);
+      s.rotation.x = Math.PI / 2; s.scale.z = 0.4; s.position.y = y;
+      const tab = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.14, 0.16), M.velcro);
+      tab.position.set(r * 0.72, y, 0.55); tab.rotation.z = 0.2;
+      const grp = new THREE.Group(); grp.add(s); grp.add(tab); return grp;
+    }
+    g.add(strap(0.96, 1.78)); g.add(strap(0.88, 1.02));
+    lowerBrace.add(strap(0.74, -1.02)); lowerBrace.add(strap(0.64, -1.82));
+    lowerBrace.rotation.x = BEND; g.add(lowerBrace);
+
+    // ---------- Scharniere + Streben (beide Seiten) ----------
     [-1, 1].forEach(sx => {
-      const hinge = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.1, 32), M.chrome);
-      hinge.rotation.z = Math.PI / 2; hinge.position.set(sx * 0.74, 0, 0);
-      g.add(hinge);
-      const barU = new THREE.Mesh(new THREE.BoxGeometry(0.07, 1.2, 0.16), M.chromeSoft);
-      barU.position.set(sx * 0.74, 0.62, 0); g.add(barU);
-      const barL = barU.clone(); barL.position.y = -0.62; g.add(barL);
-    });
-    // Klettgurte
-    [0.95, -0.95].forEach(y => {
-      const strap = new THREE.Mesh(new THREE.TorusGeometry(0.66, 0.08, 12, 64), M.fabric);
-      strap.position.y = y; strap.rotation.x = Math.PI / 2; strap.scale.z = 0.5; g.add(strap);
-      const buckle = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.16, 0.1), M.accent);
-      buckle.position.set(0, y, 0.7); g.add(buckle);
+      // Metall-Scharnierscheibe
+      const disc = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.09, 36), M.metal);
+      disc.rotation.z = Math.PI / 2; disc.position.set(sx * 0.74, 0, 0.14); g.add(disc);
+      const discIn = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.17, 0.12, 36), M.metalDark);
+      discIn.rotation.z = Math.PI / 2; discIn.position.set(sx * 0.78, 0, 0.14); g.add(discIn);
+      const bolt = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.055, 0.16, 18), M.metal);
+      bolt.rotation.z = Math.PI / 2; bolt.position.set(sx * 0.82, 0, 0.14); g.add(bolt);
+      // rote Verstell-Knöpfe (charakteristisch)
+      [0.32, -0.32].forEach(dy => {
+        const knob = new THREE.Mesh(new THREE.SphereGeometry(0.075, 18, 14), M.red);
+        knob.position.set(sx * 0.8, dy, 0.16); g.add(knob);
+      });
+      // obere Strebe (Oberschenkel)
+      g.add(tube(sx * 0.74, 0.22, 0.14, sx * 0.72, 1.55, 0.06, 0.055, M.braceBlack));
+      // untere Strebe (Unterschenkel, gebeugt)
+      const lb = tube(sx * 0.74, -0.22, 0.14, sx * 0.66, -1.55, 0.02, 0.055, M.braceBlack);
+      const lbg = new THREE.Group(); lbg.add(lb); lbg.rotation.x = BEND; g.add(lbg);
     });
     return shadowy(g);
   }
@@ -210,21 +281,21 @@ function init() {
     const g = new THREE.Group();
     const R = 1.0;
     [-1, 1].forEach(sx => {
-      const wl = wheel(R, 0.1, 14, M.rubber, M.chrome);
+      const wl = wheel(R, 0.1, 14, M.rubber, M.metalDark);
       wl.rotation.y = Math.PI / 2;
       wl.position.set(sx * 1.15, R, -0.1);
       g.add(wl);
-      // Greifring
+      // Greifring (Metall)
       const ring = new THREE.Mesh(new THREE.TorusGeometry(R - 0.06, 0.035, 12, 64), M.chromeSoft);
       ring.rotation.y = Math.PI / 2; ring.position.set(sx * 1.28, R, -0.1); g.add(ring);
     });
     // Vorderräder (Castor)
     [-1, 1].forEach(sx => {
-      const c = wheel(0.32, 0.07, 8, M.rubber, M.chromeSoft);
+      const c = wheel(0.32, 0.07, 8, M.rubber, M.metalDark);
       c.rotation.y = Math.PI / 2; c.position.set(sx * 0.78, 0.32, 1.25); g.add(c);
     });
-    // Rahmen
-    const F = M.chrome;
+    // Rahmen (schwarz)
+    const F = M.frame;
     g.add(tube(-1.0, R, -0.1, -0.85, 0.32, 1.25, 0.05, F)); // links unten schräg
     g.add(tube(1.0, R, -0.1, 0.85, 0.32, 1.25, 0.05, F));
     g.add(tube(-0.85, 1.0, 0.9, -0.85, 0.32, 1.25, 0.05, F)); // vordere Stütze
@@ -240,16 +311,16 @@ function init() {
     // Rückenrahmen + Schiebegriffe
     [-1, 1].forEach(sx => {
       g.add(tube(sx * 0.78, 1.0, -0.9, sx * 0.78, 2.5, -1.05, 0.05, F));
-      const grip = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.32, 16), M.fabric);
+      const grip = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.32, 16), M.velcro);
       grip.position.set(sx * 0.78, 2.52, -1.12); grip.rotation.z = Math.PI / 2; g.add(grip);
       // Armlehne
-      const arm = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.08, 0.9), M.fabric);
+      const arm = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.08, 0.9), M.braceBlack);
       arm.position.set(sx * 0.92, 1.5, 0.1); g.add(arm);
       g.add(tube(sx * 0.92, 1.46, 0.5, sx * 0.92, 1.0, 0.7, 0.04, F));
     });
     // Fußstützen
     [-1, 1].forEach(sx => {
-      const fp = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.06, 0.4), M.fabric);
+      const fp = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.06, 0.4), M.frame);
       fp.position.set(sx * 0.45, 0.2, 1.5); g.add(fp);
     });
     return shadowy(g);
@@ -284,11 +355,11 @@ function init() {
   /* ---------- Produkte normalisieren & einhängen ---------- */
   // [builder, zielGröße, basis-Blickwinkel(Y), feinjustierung Y-Position]
   const CONFIG = [
-    [buildLeg, 3.0, -0.25, 0],
-    [buildInsole, 3.0, -0.55, 0],
-    [buildBrace, 3.0, -0.20, 0],
-    [buildWheelchair, 3.25, 0.55, 0],
-    [buildCane, 3.1, -0.30, 0]
+    [buildLeg, 2.9, -0.25, 0],
+    [buildInsole, 2.9, -0.55, 0],
+    [buildBrace, 3.05, -0.62, 0],
+    [buildWheelchair, 3.05, 0.55, 0],
+    [buildCane, 3.0, -0.30, 0]
   ];
   const sides = Array.from(scenesEl.querySelectorAll('.scene')).map(s => s.dataset.side || 'right');
   const N = CONFIG.length;
@@ -337,7 +408,7 @@ function init() {
   let ci = 0, ciTarget = 0;       // continuous index
   let centerX = 0, centerXTarget = 0;
   let canvasOpacity = 0, canvasOpacityTarget = 0;
-  const CENTER_OFFSET = 2.15;
+  const CENTER_OFFSET = 2.35;
   let pointerX = 0, pointerY = 0, pX = 0, pY = 0;
 
   const isMobile = () => window.innerWidth < 760;
@@ -396,14 +467,14 @@ function init() {
     const yShift = mob ? 1.05 : 0;
     products.forEach((p, i) => {
       const d = Math.abs(i - ci);
-      const vis = smoothstep(0.95, 0.32, d); // 1 wenn aktiv, 0 wenn weit weg
+      const vis = smoothstep(0.82, 0.24, d); // 1 wenn aktiv, schneller aus -> saubere Übergänge
       if (vis <= 0.002) { p.visible = false; return; }
       p.visible = true;
       setOpacity(p, vis);
       const s = (0.9 + 0.1 * vis) * mobScale;
       p.scale.setScalar(s);
-      // Mobile: reiner Crossfade (zentriert). Desktop: dezenter Slide.
-      p.position.x = centerX + (i - ci) * (mob ? 0 : 1.4);
+      // Mobile: reiner Crossfade (zentriert). Desktop: größerer Abstand beim Wechsel.
+      p.position.x = centerX + (i - ci) * (mob ? 0 : 2.5);
       p.position.y = p.userData.yAdj + yShift + Math.sin(time * 0.7 + i) * 0.05;
       // sanftes Schwenken statt Volldrehung – Produkt bleibt immer gut lesbar
       const sway = reduceMotion ? 0 : Math.sin(time * 0.45 + i * 1.3) * 0.42;

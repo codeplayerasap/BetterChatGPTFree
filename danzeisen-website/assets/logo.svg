@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 132" role="img" aria-label="Sanitätshaus Danzeisen – Ihr Vitalshop – Pasing · Laim · Neuhausen">
+  <defs>
+    <linearGradient id="dz-yellow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FFE96B"/><stop offset="1" stop-color="#FFCE3A"/>
+    </linearGradient>
+    <linearGradient id="dz-pink" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F9A8CE"/><stop offset="1" stop-color="#F17FB4"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Wellen (hinter dem Schriftzug) -->
+  <g>
+    <path fill="url(#dz-yellow)" d="M6,70 C110,40 188,90 300,54 C362,34 402,60 436,42
+      L436,58 C402,78 362,52 300,72 C188,108 110,58 6,86 Z"/>
+    <path fill="url(#dz-pink)" opacity="0.92" d="M6,52 C120,84 202,36 300,70 C372,95 408,58 436,74
+      L436,88 C408,72 372,110 300,88 C202,54 120,102 6,70 Z"/>
+  </g>
+
+  <!-- Schriftzug -->
+  <text x="40" y="30" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" letter-spacing="0.5" fill="#1687C6">Sanitätshaus</text>
+  <text x="34" y="76" font-family="Arial, Helvetica, sans-serif" font-size="47" font-weight="800" letter-spacing="-1.5" fill="#14A7E6">DANZEISEN</text>
+  <text x="312" y="94" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="600" font-style="italic" fill="#1687C6">Ihr Vitalshop</text>
+  <text x="41" y="118" font-family="Arial, Helvetica, sans-serif" font-size="14.5" font-weight="500" letter-spacing="3.4" fill="#1687C6">Pasing · Laim · Neuhausen</text>
+</svg>
