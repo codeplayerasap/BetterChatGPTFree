@@ -475,15 +475,16 @@ function init() {
     const rect = scenesEl.getBoundingClientRect();
     const vh = window.innerHeight, mid = vh / 2;
     // ci aus den Szenen-Mittelpunkten interpolieren -> rastet exakt auf ganze Indizes
+    const SC = sceneEls.length; // Szenen gesamt (inkl. Splat-Szene); Modelle = N
     const centers = sceneEls.map(s => { const r = s.getBoundingClientRect(); return r.top + r.height / 2; });
     let idx = 0;
     if (mid <= centers[0]) idx = 0;
-    else if (mid >= centers[N - 1]) idx = N - 1;
-    else for (let k = 0; k < N - 1; k++) {
+    else if (mid >= centers[SC - 1]) idx = SC - 1;
+    else for (let k = 0; k < SC - 1; k++) {
       if (mid >= centers[k] && mid <= centers[k + 1]) { idx = k + (mid - centers[k]) / (centers[k + 1] - centers[k]); break; }
     }
     ciTarget = idx;
-    const active = clamp(Math.round(ciTarget), 0, N - 1);
+    const active = clamp(Math.round(ciTarget), 0, SC - 1);
     centerXTarget = isMobile() ? 0 : (sides[active] === 'right' ? CENTER_OFFSET : -CENTER_OFFSET);
     const inView = rect.top < vh * 0.85 && rect.bottom > vh * 0.15;
     canvasOpacityTarget = inView ? 1 : 0;

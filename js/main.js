@@ -57,6 +57,15 @@
   }, { threshold: 0.6 });
   $$('[data-count]').forEach(c => cio.observe(c));
 
+  /* ---- Splat-Viewer lazy laden (erst wenn Szene naht) ---- */
+  const splatFrame = $('.splat-frame');
+  if (splatFrame && splatFrame.dataset.src) {
+    const lazyIO = new IntersectionObserver((es) => {
+      es.forEach(e => { if (e.isIntersecting) { splatFrame.src = splatFrame.dataset.src; lazyIO.disconnect(); } });
+    }, { rootMargin: '900px 0px' });
+    lazyIO.observe(splatFrame);
+  }
+
   /* ---- Scrollspy ---- */
   const ids = ['szenen', 'leistungen', 'standorte', 'service', 'kontakt'];
   const map = { szenen: '#szenen', leistungen: '#leistungen', standorte: '#standorte', service: '#service', kontakt: '#kontakt' };
