@@ -1,0 +1,8 @@
+services:
+  danzeisen:
+    build: .
+    image: danzeisen-website
+    container_name: danzeisen-website
+    ports:
+      - "8088:80"
+    restart: unless-stopped
