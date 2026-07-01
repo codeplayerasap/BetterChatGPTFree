@@ -27,18 +27,24 @@
   <script type="module">
     import * as GaussianSplats3D from '@mkkellogg/gaussian-splats-3d';
     const ld = document.getElementById('ld');
+    const q = new URLSearchParams(location.search);
+    const nums = (s, d) => (s ? s.split(',').map(Number) : d);
+    const src = q.get('src') || 'assets/scan.ply';
+    const camUp = nums(q.get('up'), [0, 0, 1]);
+    const camPos = nums(q.get('pos'), [-2.4, -0.2, 0.15]);
+    const camLook = nums(q.get('look'), [0, 0, 0]);
     try {
       const viewer = new GaussianSplats3D.Viewer({
         rootElement: document.getElementById('v'),
-        cameraUp: [0, 0, 1],
-        initialCameraPosition: [-2.4, -0.2, 0.15],
-        initialCameraLookAt: [0, 0, 0],
+        cameraUp: camUp,
+        initialCameraPosition: camPos,
+        initialCameraLookAt: camLook,
         sharedMemoryForWorkers: false,
         antialiased: true,
         useBuiltInControls: true,
         dynamicScene: false
       });
-      viewer.addSplatScene('assets/scan.ply', { splatAlphaRemovalThreshold: 5, showLoadingUI: false, progressiveLoad: true })
+      viewer.addSplatScene(src, { splatAlphaRemovalThreshold: 5, showLoadingUI: false, progressiveLoad: true })
         .then(() => {
           viewer.start();
           ld.classList.add('hide');

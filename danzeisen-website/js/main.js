@@ -58,12 +58,15 @@
   $$('[data-count]').forEach(c => cio.observe(c));
 
   /* ---- Splat-Viewer lazy laden (erst wenn Szene naht) ---- */
-  const splatFrame = $('.splat-frame');
-  if (splatFrame && splatFrame.dataset.src) {
+  const splatFrames = $$('.splat-frame');
+  if (splatFrames.length) {
     const lazyIO = new IntersectionObserver((es) => {
-      es.forEach(e => { if (e.isIntersecting) { splatFrame.src = splatFrame.dataset.src; lazyIO.disconnect(); } });
+      es.forEach(e => {
+        const f = e.target;
+        if (e.isIntersecting && f.dataset.src && !f.src) { f.src = f.dataset.src; lazyIO.unobserve(f); }
+      });
     }, { rootMargin: '900px 0px' });
-    lazyIO.observe(splatFrame);
+    splatFrames.forEach(f => lazyIO.observe(f));
   }
 
   /* ---- Scrollspy ---- */
