@@ -41,7 +41,7 @@ button{font-family:inherit;cursor:pointer}
 .scroll-progress{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--teal),#4cc6c6);z-index:200;transition:width .1s linear}
 
 /* ---- 3D Canvas ---- */
-#stage{position:fixed;inset:0;width:100vw;height:100vh;z-index:1;pointer-events:none;opacity:0;transition:opacity .6s var(--ease)}
+#stage{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;opacity:0;transition:opacity .6s var(--ease)}
 .stage-loader{position:fixed;inset:0;display:grid;place-items:center;z-index:2;pointer-events:none;transition:opacity .5s}
 .stage-loader.hidden{opacity:0}
 .stage-loader span{width:30px;height:30px;border-radius:50%;border:2.5px solid var(--line);border-top-color:var(--teal);animation:spin 1s linear infinite}
@@ -115,7 +115,7 @@ button{font-family:inherit;cursor:pointer}
 .scene--splat .scene__copy{flex:0 0 auto}
 .scene__hint{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;
   padding:9px 16px;font-size:.85rem;font-weight:500;color:var(--ink-soft);box-shadow:var(--shadow-sm)}
-@media(max-width:860px){
+@media(max-width:900px){
   .scene--splat .scene__inner{flex-direction:column}
   .scene__stage{flex:none;width:100%;height:56vh;order:-1}
   .scene--splat .scene__copy{text-align:center}
@@ -222,26 +222,31 @@ button{font-family:inherit;cursor:pointer}
   .stripe__grid{grid-template-columns:repeat(2,1fr)}
   .locs,.kontakt{grid-template-columns:1fr}
 }
-@media(max-width:760px){
+/* Tablet + Phone: Burger-Navigation und gestapelte 3D-Szenen
+   (iPad-Portrait 768px fällt bewusst mit hinein) */
+@media(max-width:900px){
   .burger{display:flex}
   .nav__links{position:fixed;inset:70px 0 auto 0;flex-direction:column;align-items:stretch;gap:4px;
     background:rgba(255,255,255,.92);backdrop-filter:blur(20px);padding:14px 28px 22px;box-shadow:var(--shadow);
     transform:translateY(-130%);transition:transform .4s var(--ease)}
   .nav__links.open{transform:none}
-  .nav__links>a{padding:13px 14px;font-size:1rem}
+  .nav__links>a{padding:14px;font-size:1.02rem;min-height:44px}
   body.menu-open .burger span:nth-child(1){transform:translateY(3.5px) rotate(45deg)}
   body.menu-open .burger span:nth-child(2){transform:translateY(-3.5px) rotate(-45deg)}
-  /* on mobile the 3D sits above, copy below for clarity */
-  .scene{min-height:auto;padding:62vh 0 8vh}
+  /* 3D oben, Text darunter – für Phone & iPad-Portrait */
+  .scene{min-height:auto;padding:58vh 0 9vh}
   .scene__inner{justify-content:center!important}
-  .scene__copy{max-width:560px;text-align:center}
+  .scene__copy{max-width:620px;text-align:center}
   .scene__tags{justify-content:center}
   .scene__copy::before{inset:-20px;background:rgba(255,255,255,.82)!important;border-radius:28px}
+  .footer__grid{grid-template-columns:repeat(2,1fr);gap:30px}
 }
 @media(max-width:540px){
   .cards,.steps,.stripe__grid{grid-template-columns:1fr}
   .field-row{grid-template-columns:1fr}
   .wrap{padding:0 20px}
+  .footer__grid{grid-template-columns:1fr;gap:24px}
+  .cart-main{padding-left:20px;padding-right:20px}
 }
 
 /* ============================================================
@@ -383,8 +388,9 @@ button{font-family:inherit;cursor:pointer}
 }
 @media(max-width:640px){
   .shop-toolbar{position:static}
-  .shop-tools{width:100%}
-  .search{flex:1}
+  .shop-tools{width:100%;flex-wrap:wrap}
+  .search{flex:1 1 100%}
+  #shopSort{flex:1 1 100%;width:100%;min-width:0}
   .pdp__opts{grid-template-columns:1fr}
   .crow{grid-template-columns:64px 1fr auto;grid-template-areas:"m i r" "m s x";row-gap:10px}
   .crow__media{grid-area:m;width:64px}

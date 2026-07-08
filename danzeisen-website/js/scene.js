@@ -468,7 +468,7 @@ function init() {
   const CENTER_OFFSET = 2.35;
   let pointerX = 0, pointerY = 0, pX = 0, pY = 0;
 
-  const isMobile = () => window.innerWidth < 760;
+  const isMobile = () => window.innerWidth < 900; // Phone + iPad-Portrait: zentriertes 3D über dem Text
   const sceneEls = Array.from(scenesEl.querySelectorAll('.scene'));
 
   function updateScroll() {

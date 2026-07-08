@@ -28,6 +28,13 @@
   @keyframes s{to{transform:rotate(360deg)}}
   .err{max-width:520px;padding:24px;text-align:center;color:#b23b2e;font-weight:500}
   .back{position:fixed;left:22px;bottom:26px;z-index:11;pointer-events:auto;color:var(--teal);font-weight:600;font-size:.9rem;text-decoration:none;background:#fff;border:1px solid #e3edeb;border-radius:999px;padding:8px 15px}
+  /* Phone/iPad-Portrait: Hinweis und Zurück-Button gestapelt statt überlappend */
+  @media(max-width:700px){
+    .caption{bottom:92px}
+    .caption .hint{font-size:.78rem}
+    .back{left:50%;transform:translateX(-50%);bottom:28px}
+    .topbar img{height:38px}
+  }
 </style>
 <script type="importmap">
 { "imports": {
@@ -45,11 +52,17 @@
   <div class="caption">
     <h1>Kniebandage</h1>
     <p>Fotorealistischer 3D-Scan · Gaussian Splatting</p>
-    <div><span class="hint">🖱️ Ziehen zum Drehen · Scrollen zum Zoomen</span></div>
+    <div><span class="hint" id="hint">🖱️ Ziehen zum Drehen · Scrollen zum Zoomen</span></div>
   </div>
   <a class="back" href="index.html">← Zur Website</a>
   <div class="loading" id="loading"><div class="spin"></div></div>
 
+  <script>
+    // Touch-Geräte bekommen den passenden Bedienhinweis
+    if (window.matchMedia('(pointer:coarse)').matches) {
+      document.getElementById('hint').textContent = '👆 Ziehen zum Drehen · Pinch zum Zoomen';
+    }
+  </script>
   <script type="module">
     import * as GaussianSplats3D from '@mkkellogg/gaussian-splats-3d';
 
