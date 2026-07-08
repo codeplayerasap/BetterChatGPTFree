@@ -3,11 +3,24 @@
 Moderne, interaktive One-Page-Webseite für das **Sanitätshaus Danzeisen** (München, seit 1928)
 mit **realistischen 3D-Scroll-Szenen**. Statisch, **kein Build nötig** – einfach auf die Domain hochladen.
 
+## Startseiten-Varianten
+
+Ein Klick auf das Logo öffnet ein Dropdown mit drei vollwertigen Startseiten:
+
+1. **3D Erlebnis** – `index.html` (Scroll-Szenen in Echtzeit-3D)
+2. **Editorial** – `editorial.html` (ruhig, warm, magazinhaft)
+3. **Studio** – `studio.html` (klar, weiß, produktfokussiert, Bento-Grid)
+
+Soll eine andere Variante die Standard-Startseite werden, einfach die Dateien
+umbenennen (z. B. `studio.html` → `index.html`) und die Links im Dropdown anpassen.
+
 ## Inhalt
 
 ```
 danzeisen-website/
-├── index.html          → die komplette Seite
+├── index.html          → Startseite Variante 01 (3D)
+├── editorial.html      → Startseite Variante 02
+├── studio.html         → Startseite Variante 03
 ├── css/styles.css      → Design (hell, premium)
 ├── js/scene.js         → 3D-Engine (Three.js, ES-Modul)
 ├── js/main.js          → UI (Nav, Standorte, Formular)

@@ -13,6 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="css/styles.css" />
+<link rel="stylesheet" href="css/switcher.css" />
 
 <script type="importmap">
 { "imports": {
@@ -33,9 +34,18 @@
 <!-- ===== Nav ===== -->
 <header class="nav" id="nav">
   <div class="wrap nav__inner">
-    <a href="#top" class="brand" aria-label="Sanitätshaus Danzeisen – Startseite">
-      <img class="brand__logo" src="assets/logo.svg" alt="Sanitätshaus Danzeisen" width="200" height="60" />
-    </a>
+    <div class="vswitch">
+      <button class="vswitch__btn" aria-haspopup="menu" aria-expanded="false" aria-label="Startseiten-Variante wählen">
+        <img src="assets/logo.svg" alt="Sanitätshaus Danzeisen" width="200" height="60" />
+        <svg class="vswitch__chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></svg>
+      </button>
+      <nav class="vswitch__menu" aria-label="Startseiten-Varianten">
+        <span class="vswitch__label">Startseite wählen</span>
+        <a href="index.html" class="is-current"><span class="vswitch__num">01</span><span class="vswitch__txt"><strong>3D Erlebnis</strong><small>Scroll-Szenen in Echtzeit-3D</small></span><svg class="vswitch__check" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 8.5l3.5 3.5 7-8"/></svg></a>
+        <a href="editorial.html"><span class="vswitch__num">02</span><span class="vswitch__txt"><strong>Editorial</strong><small>Ruhig, warm, magazinhaft</small></span><svg class="vswitch__check" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 8.5l3.5 3.5 7-8"/></svg></a>
+        <a href="studio.html"><span class="vswitch__num">03</span><span class="vswitch__txt"><strong>Studio</strong><small>Klar, weiß, produktfokussiert</small></span><svg class="vswitch__check" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 8.5l3.5 3.5 7-8"/></svg></a>
+      </nav>
+    </div>
     <nav class="nav__links" id="navLinks" aria-label="Hauptnavigation">
       <a href="#szenen">Produkte</a>
       <a href="#leistungen">Leistungen</a>
@@ -290,5 +300,6 @@
 <script src="js/main.js"></script>
 <script src="js/shop-data.js"></script>
 <script src="js/shop-core.js"></script>
+<script src="js/switcher.js"></script>
 </body>
 </html>

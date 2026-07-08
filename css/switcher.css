@@ -1,0 +1,45 @@
+/* ============================================================
+   Varianten-Switcher — Klick aufs Logo öffnet ein Dropdown
+   mit den Startseiten-Varianten. Apple-artig: Blur, weiche
+   Schatten, federnde Einblendung. Shared über alle Seiten.
+   ============================================================ */
+.vswitch{position:relative;display:inline-flex;align-items:center}
+.vswitch__btn{display:inline-flex;align-items:center;gap:10px;border:none;background:transparent;padding:6px 8px 6px 0;border-radius:14px;cursor:pointer;transition:background .2s}
+.vswitch__btn:hover{background:rgba(20,40,38,.05)}
+.vswitch__btn:focus-visible{outline:2px solid #0e8f8f;outline-offset:3px}
+.vswitch__btn img{height:46px;width:auto;display:block}
+.vswitch__chev{width:16px;height:16px;flex:none;color:#7c8a86;transition:transform .3s cubic-bezier(.22,1,.36,1)}
+.vswitch.open .vswitch__chev{transform:rotate(180deg)}
+
+.vswitch__menu{
+  position:absolute;top:calc(100% + 12px);left:0;min-width:300px;z-index:300;
+  background:rgba(255,255,255,.86);
+  -webkit-backdrop-filter:saturate(180%) blur(22px);backdrop-filter:saturate(180%) blur(22px);
+  border:1px solid rgba(20,40,38,.08);border-radius:20px;
+  box-shadow:0 24px 70px -18px rgba(15,40,38,.35),0 4px 16px rgba(15,40,38,.08);
+  padding:10px;
+  opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top left;pointer-events:none;
+  transition:opacity .25s cubic-bezier(.22,1,.36,1),transform .25s cubic-bezier(.22,1,.36,1);
+}
+.vswitch.open .vswitch__menu{opacity:1;transform:none;pointer-events:auto}
+.vswitch__label{display:block;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8a958f;padding:8px 12px 6px}
+.vswitch__menu a{
+  display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:13px;
+  color:#15201f;text-decoration:none;transition:background .18s;
+}
+.vswitch__menu a:hover{background:rgba(14,143,143,.09)}
+.vswitch__num{
+  width:34px;height:34px;flex:none;display:grid;place-items:center;border-radius:10px;
+  background:#eef4f4;color:#0a6e6e;font-weight:800;font-size:.8rem;font-family:'Inter',system-ui,sans-serif;
+}
+.vswitch__menu a.is-current .vswitch__num{background:#0e8f8f;color:#fff}
+.vswitch__txt{display:flex;flex-direction:column;line-height:1.25;min-width:0}
+.vswitch__txt strong{font-size:.94rem;font-weight:650;letter-spacing:-.01em}
+.vswitch__txt small{font-size:.78rem;color:#7c8a86}
+.vswitch__check{margin-left:auto;width:16px;height:16px;color:#0e8f8f;flex:none;opacity:0}
+.vswitch__menu a.is-current .vswitch__check{opacity:1}
+
+@media(max-width:760px){
+  .vswitch__btn img{height:40px}
+  .vswitch__menu{min-width:272px}
+}
