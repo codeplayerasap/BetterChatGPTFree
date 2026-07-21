@@ -66,7 +66,11 @@ img,svg{display:block;max-width:100%}
 .hero__visual{position:relative;display:grid;place-items:center}
 .arch{
   position:relative;width:min(380px,88%);aspect-ratio:3/3.7;overflow:hidden;
-  background:linear-gradient(170deg,var(--green) 0%,var(--green-deep) 80%);
+  /* historisches Ladenfoto im Bogen; fehlt die Datei, trägt der Verlauf allein */
+  background:
+    linear-gradient(170deg,rgba(16,64,58,.78) 0%,rgba(10,42,38,.86) 80%),
+    url('../assets/storefront.jpg') center 38%/cover no-repeat,
+    linear-gradient(170deg,var(--green) 0%,var(--green-deep) 80%);
   border-radius:999px 999px 32px 32px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
   box-shadow:0 40px 80px -35px rgba(12,51,46,.55);

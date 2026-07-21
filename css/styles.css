@@ -75,6 +75,15 @@ button{font-family:inherit;cursor:pointer}
 .burger span{width:20px;height:2px;background:var(--ink);border-radius:2px;transition:.3s var(--ease)}
 
 /* ---- Hero ---- */
+/* Historisches Ladenfoto als Hero-Hintergrund, unten weich in die Seite gefadet.
+   Fehlt assets/storefront.jpg, bleibt der bisherige Verlauf sichtbar (Fallback). */
+.hero__photo{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:url('../assets/storefront.jpg') center 32%/cover no-repeat}
+.hero__photo::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(to bottom,
+    rgba(255,255,255,.62) 0%, rgba(255,255,255,.40) 30%,
+    rgba(255,255,255,.55) 55%, rgba(255,255,255,.92) 82%, #ffffff 100%)}
+.hero>*:not(.hero__photo){position:relative;z-index:1}
 .hero{position:relative;z-index:3;min-height:100vh;display:flex;flex-direction:column;justify-content:center;
   background:radial-gradient(120% 80% at 50% -10%,#f0f7f6 0%,#ffffff 55%)}
 .hero__inner{padding-top:90px;max-width:920px}
